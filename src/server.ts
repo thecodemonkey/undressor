@@ -1,13 +1,16 @@
-const express = require('express');
-const dotenv = require('dotenv');
+import express from 'express'
+import cors from 'cors'
+import dotenv from 'dotenv';
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT;
 
+app.use(cors());
+
 app.get('/', (req, res) => {
-  res.send('Express + TypeScript Server');
+  res.json({status: 'ok'});
 });
 
 app.listen(port, () => {
