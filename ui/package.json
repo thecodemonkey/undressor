@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "cd dist/ui && http-server --cors -d false",
     "build": "ng build",
+    "postinstall": "npm i http-server -g",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
