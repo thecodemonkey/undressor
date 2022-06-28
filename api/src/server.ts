@@ -16,6 +16,10 @@ app.get('/profile/:twittername', async (req, res) => {
   res.json( profile);
 });
 
+app.get('/alive', async (req, res) => {
+  res.status(200);
+});
+
 
 
 

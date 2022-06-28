@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // import { initROClient, initStream } from './twitter.config'
 const cron_1 = require("cron");
-const job = new cron_1.CronJob('0/5 * * * * *', () => { console.log('hello...'); }, null, true);
+const job = new cron_1.CronJob('0/60 * * * * *', () => { console.log('hello...'); }, null, true);
 // async function start() {
 //     const twitter = initROClient();
 //     const user = await twitter.v2.userByUsername('chillya');
