@@ -3,7 +3,7 @@ import { CronJob } from 'cron';
 
 
 const job = new CronJob(
-    '0/5 * * * * *',
+    '* * * * * *',
     () => { console.log('hello...') },
     null,
     true
