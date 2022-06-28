@@ -46,7 +46,7 @@ app.get('/profile/:twittername', (req, res) => __awaiter(void 0, void 0, void 0,
     res.json(profile);
 }));
 app.get('/alive', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.status(200);
+    res.status(200).send();
 }));
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
