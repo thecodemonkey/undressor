@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { map, Observable, of } from 'rxjs';
 import { ApiService } from '../api.service';
 
@@ -8,14 +9,19 @@ import { ApiService } from '../api.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  
+  name = new FormControl('');
+  data = of( { status: 'war hier...' } );
 
   constructor(private api:ApiService) {}
 
-  data = of( { status: 'war hier...' } );
-
+  
   ngOnInit(): void {
-     this.data = this.api.getData()
-                         .pipe(map(d => ({id: -1, status: `${d.status}-xx`})));
+
   }
 
+  load(){
+    this.data = this.api.getData(this.name.getRawValue() || '')
+    .pipe(map(d => ({id: -1, status: `${d.status}-xx`, profile: d?.profile })));
+  }
 }

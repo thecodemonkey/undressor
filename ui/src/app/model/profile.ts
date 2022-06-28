@@ -1,5 +1,6 @@
 
 export interface Profile {
+    status: string,
     id?: number,
-    status: string    
+    profile?: any
 }

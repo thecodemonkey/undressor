@@ -1,5 +1,12 @@
+
 <h1>awesome...</h1>
 
-<div>
-  war hier : {{ (data | async)?.status }}
-</div>
+<input type="text" [formControl]="name"><button (click)="load()">ok</button>
+
+<br/><br/><br/>
+
+<pre>
+war hier : 
+
+{{ (data | async) | json }}
+</pre>
