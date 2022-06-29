@@ -1,0 +1,12 @@
+name: HEROKU keepalive
+
+on:
+  workflow_dispatch:
+  schedule:
+  - cron: '*/1 * * * *'
+
+jobs:
+  keep:
+    runs-on: ubuntu-latest
+    steps:
+    - run: curl https://undressor.herokuapp.com/alive
