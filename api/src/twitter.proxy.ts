@@ -1,4 +1,6 @@
-import { initROClient } from './twitter.config'
+import { Console } from 'console';
+import { TwitterApi } from 'twitter-api-v2';
+import { initClient, initOAuth1Client, initROClient } from './twitter.config'
 
 
 async function getProfile(twittername: string) {
@@ -13,4 +15,25 @@ async function getProfile(twittername: string) {
     return { status: 'ok', profile: user };
 }
 
-export { getProfile }
+
+async function reply(text: string, tweetid: string) {
+    const tclient = initOAuth1Client();
+
+    const res = await tclient.v2.reply(text, tweetid);
+
+    console.debug('send reply', JSON.stringify(res, null, 4));
+}
+
+async function send(text: string) {
+
+    const tclient = initOAuth1Client();
+
+
+
+    const res = await tclient.v2.tweet(text);
+
+
+    console.debug('send tweet result', JSON.stringify(res, null, 4));
+}
+
+export { reply, send, getProfile }
