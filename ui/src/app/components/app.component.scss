@@ -1,0 +1,79 @@
+:host {
+    display: flex;
+    justify-content: center;
+
+    .tname {
+        position:absolute;
+        width: 34%;
+        height: 6%;
+        background-color: #212d31;
+        border: none;
+        left: 50%;
+        top: 61%;
+        margin-left: -17%;
+        padding-left: 20px;
+        font-size: 1.5rem;
+        color: #98d3dc;
+        outline: none;
+        box-shadow: 2px 2px 45px 0px #ffffff55;
+        transition: all .5s;
+    
+        &:focus {
+            box-shadow: 2px 2px 65px 0px #94dde7bb;
+        }
+    }
+    
+    .claim {
+        width: 0;
+        font-size: 1.2rem;
+        text-shadow: 2px 2px #000;
+    
+        color: #ffffff;
+        font-family: 'Courier New', Courier, monospace;
+    
+        margin: 0;
+        margin-top: 25%;
+
+        overflow: hidden;
+        white-space: nowrap; 
+        border-right: 2px solid transparent; 
+
+        animation: typing 3.5s steps(40, end) forwards, 
+                   blink-caret .75s step-end 6;
+                   
+
+        animation-delay: 3s;
+
+    }    
+
+    pre {
+        position: absolute;
+        left: 0;
+        color: #4cc6d7;
+    }    
+}
+
+
+
+
+
+@keyframes typing {
+    from { width: 0;  }
+    to { width: 705px;  }
+}
+  
+
+@keyframes blink-caret {
+    from { 
+        border-color: transparent;         
+    }
+    50% { 
+        border-color: #98d3dc;
+    }
+    to
+    { 
+        border-color: transparent;
+    }
+ 
+}
+

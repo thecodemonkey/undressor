@@ -1,7 +1,7 @@
-// import { initROClient, initStream } from './twitter.config'
 import { CronJob } from 'cron';
 import * as db from './db';
 import { initROClient } from './twitter.config';
+import * as tclient from './twitter.proxy';
 
 
 async function run() {
@@ -16,6 +16,8 @@ async function run() {
         if (lastmention) {
             console.log('persist lastmention...', lastmention);
             await db.updateLastMention(lastmention);
+
+            tclient.reply('reply 2... https://undressor-ui.herokuapp.com/ ', lastmention.id);
         }
     }
     catch(e)
@@ -52,22 +54,19 @@ async function checkMentions(lastMentionId: string) {
 
 
 const job = new CronJob(
-    '0/60 * * * * *',
+    `0/${process.env.BOT_POLLING_INTERVAL} * * * * *`,
     async () => { await run() },
     null,
-    true
+    false
 )
 
-// async function start() {
 
+const botActive = JSON.parse(process.env.BOT_ON);
 
-//     // stream.on(ETwitterStreamEvent.Data, console.log);
-//     // stream.on(ETwitterStreamEvent.Connected, () => console.log('Stream is started.'));
-//     // // Start stream!
-//     // await stream.connect({ autoReconnect: true, autoReconnectRetries: Infinity });
-// }
-
-
-// (async () => {
-//     start();
-// })();
+if (botActive) {
+    job.start()
+}
+else
+{
+    console.log('bot is deactivated. set BOT_ON env to true. ');
+}

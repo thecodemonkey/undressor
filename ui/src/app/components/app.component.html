@@ -1,11 +1,12 @@
-<h1>awesome...</h1>
 
-<input type="text" [formControl]="name"><button (click)="load()">ok</button>
 
-<br/><br/><br/>
+<span class="claim">Only when the clothes fall does the true soul become visible.</span>
+<input class="tname" type="text" [formControl]="name" (keyup.enter)="load()">
+
+
 
 <pre>
-war hier : 
+user data : 
 
 {{ (data | async) | json }}
 </pre>
