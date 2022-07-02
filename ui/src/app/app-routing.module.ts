@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'insights', component: InsightsComponent },
   { path: 'dashboard/:name', component: DashboardComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: '',   component: HomeComponent },
+  { path: '',   component: HomeComponent, pathMatch: 'full' },
   { path: '**',   component: NotfoundComponent } 
 ];
 
