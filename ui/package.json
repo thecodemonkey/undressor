@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "cd dist/ui && http-server --cors -d false",
+    "start": "cd dist/ui && http-server --cors -d false -P http://localhost:30379? -p 30379",
     "build": "ng build",
     "postinstall": "npm i http-server -g",
     "watch": "ng build --watch --configuration development",
