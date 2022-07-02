@@ -1,7 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
-body {
-    background-image: url('assets/dummy-bg.png');
-    background-repeat: no-repeat;
-    background-size: cover;
+html, body {
+    min-height: 100vh;
+    height: auto;
+    margin: 0;
+
+    background: rgb(141,163,165);
+    background: linear-gradient(180deg, rgba(141,163,165,1) 0%, rgba(191,213,205,1) 100%);
 }

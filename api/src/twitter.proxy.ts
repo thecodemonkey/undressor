@@ -36,4 +36,29 @@ async function send(text: string) {
     console.debug('send tweet result', JSON.stringify(res, null, 4));
 }
 
-export { reply, send, getProfile }
+async function getNewMentions(lastMentionId: string) {
+    const twitter = initROClient();
+
+    // console.log(`call users id of '${ process.env.TWITTER_NAME }' `);
+    const user = await twitter.v2.userByUsername(process.env.TWITTER_NAME);
+
+    // console.log(`'${process.env.TWITTER_NAME}' id is: ${user.data.id} `);
+
+    const mentions = await twitter.v2.userMentionTimeline(user.data.id, {
+        since_id: lastMentionId
+    });
+
+    const mentResult = mentions.data;
+
+    if (mentResult.meta.result_count < 1) {
+        console.log('NO RESULT!');
+
+        return null;
+    } else {
+        console.log('\nmentions: ', JSON.stringify(mentResult.data, null, 4));
+
+        return mentResult.data[0];
+    }
+}
+
+export { reply, send, getProfile, getNewMentions }

@@ -1,0 +1,31 @@
+:host {
+    height: 100vh;
+    color: #000;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+
+    .box {
+        width: 400px;
+        margin-bottom: 200px;
+
+        .avatar {
+            display: inline-block;
+            clear: both;
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 50px;
+            background-image: url('/assets/social2.png');
+            width: 200px;
+            height: 200px;
+            border-radius: 100%;
+            border: 10px solid #8fa3a3;
+        }
+    }
+
+
+}
