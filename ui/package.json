@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "cd dist/ui && http-server --cors -d false -P https://dashboard.heroku.com? -p 30379",
+    "start": "cd dist/ui && http-server --cors -d false -P https://undressor-ui.herokuapp.com? -p 30379",
     "build": "ng build",
     "postinstall": "npm i http-server -g",
     "watch": "ng build --watch --configuration development",
