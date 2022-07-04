@@ -1,60 +1,133 @@
 :host {
     height: 100vh;
-    background-image: url('/assets/dummy-bg.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    display: flex;
+    display:flex;
     justify-content: center;
+    flex-direction: column;
 
-    .tname {
+    .faces {
         position:absolute;
-        width: 34%;
-        height: 6%;
-        background-color: #212d31;
-        border: none;
-        left: 50%;
-        top: 61%;
-        margin-left: -17%;
-        padding-left: 20px;
-        font-size: 1.1rem;
-        color: #98d3dc;
-        outline: none;
-        box-shadow: 2px 2px 45px 0px #ffffff55;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        overflow: hidden;
+
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-content: flex-start;
         transition: all .5s;
-    
-        &:focus {
-            box-shadow: 2px 2px 65px 0px #94dde7bb;
+
+        &.off {
+            opacity: 0;
+            transition-delay: 1.5s;
+        }
+
+        .face-item {
+            background-color: #000;
+            width: 16.65%;
+            height: 25%;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            border: 2px solid #000;
+            perspective: 1000px;          
         }
     }
     
-    .claim {
-        width: 0;
-        height: 20px;
-        font-size: 1.2rem;
-        text-shadow: 2px 2px #000;
-    
-        color: #ffffff;
-        font-family: 'Courier New', Courier, monospace;
-    
-        margin: 0;
-        margin-top: 25%;
 
+    .area {
+        border: .5px solid #5CECFF55;
+        border-right: none;
+        border-left: none;    
+    
+        text-align: center; 
+        height: 30%;
+    
+        display:flex;
+        justify-content: space-evenly; 
+        flex-direction: column;
+        align-items: center;
         overflow: hidden;
-        white-space: nowrap; 
-        border-right: 2px solid transparent; 
+        opacity: 0;
 
-        animation: typing 3.5s steps(40, end) forwards, 
-                   blink-caret .75s step-end 6;
-                   
+        animation: fadein 1s ease-in 1 forwards 3s;
+    
+        backdrop-filter: blur(8px);
+        transition: all .5s;
 
-        animation-delay: 2s;
-    }    
+        &.off {
+            opacity: 0!important;
+        }
 
-    pre {
-        position: absolute;
-        left: 0;
-        color: #4cc6d7;
+        .loader {
+            position: absolute;
+        }
+
+        .bg-dark {
+            position:absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            background-color: rgb(16, 24, 24);
+            opacity: .4;
+            z-index: 0;
+        }
+    
+        .claim {
+            width: 0;
+    
+            font-size: 1.2rem;
+            text-shadow: 2px 2px #000;
+        
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+        
+            overflow: hidden;
+            white-space: nowrap; 
+            border-right: 2px solid transparent; 
+            transition: all .5s;
+    
+            animation: typing 3.5s steps(40, end) forwards, 
+                       blink-caret .75s step-end 6;
+                       
+            animation-delay: 4s;
+            z-index: 1;
+
+            &.off {
+                opacity: 0;
+            }
+        }        
+    
+        .tname {
+            width: 40%;
+            height: 40px;
+            background-color: #000;
+            border: none;
+            padding-left: 20px;
+            font-size: 1.1rem;
+            letter-spacing: .1rem;
+            color: #98d3dc;
+
+            outline: none;
+            box-shadow: 2px 2px 45px 0px #ffffff55;
+            transition: all .5s;
+            z-index: 1;
+        
+            &:focus {
+                box-shadow: 2px 2px 65px 0px #94dde7bb;
+            }
+
+            &::placeholder{
+                letter-spacing: normal
+            }
+
+            &.off {
+                opacity: 0;
+            }
+        }    
+    
     }    
 }
 
@@ -78,4 +151,48 @@
     }
  
 }
+
+@keyframes fadein {
+    from { opacity : 0;}
+    to { opacity: 1;}
+}
+
+
+// mobile
+
+@media screen and (max-width:450px) {
+    :host{
+        .faces {
+            .face-item {
+                width: 33.3%;
+            }
+        }
+
+
+        .area {
+            height: 50%;
+
+            .tname {
+                width: 80%;
+            }
+
+            .claim {
+                white-space: unset;
+                width: 80%;
+                animation: none;
+            }
+        }
+    }      
+    
+ }
+
+ @media screen and (max-height:450px) {
+    :host{
+        .area {
+            height: 50%;
+        }
+    }      
+    
+ }
+
 

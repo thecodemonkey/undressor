@@ -9,6 +9,8 @@ import { HomeComponent } from './components/home/home.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { InsightsComponent } from './components/insights/insights.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FaceComponent } from './components/home/face/face.component';
+import { LoaderComponent } from './components/shared/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     HomeComponent,
     NotfoundComponent,
     InsightsComponent,
-    DashboardComponent
+    DashboardComponent,
+    FaceComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
