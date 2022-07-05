@@ -1,0 +1,9 @@
+<div class="bar">
+    <span *ngFor="let i of data" [style.width.%]="i.ratio">{{ i.value }}</span>
+</div>
+<div class="labels">
+    <ng-container *ngFor="let i of data">
+        <div>{{ i.label }}</div>
+        <span>|</span>
+    </ng-container>
+</div>

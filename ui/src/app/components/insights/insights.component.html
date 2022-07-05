@@ -1,8 +1,53 @@
-<!-- <p>insights works! {{twitterName}}</p>
+<header>
+    <div class="menu">
+        <!-- <fa-icon [icon]="faBars"></fa-icon> -->
+        <div class="bar" (click)="navOut = !navOut"><span></span><span></span><span></span></div>
+    </div>
+    <div class="search">
+        <input type="text" />
+        <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
+    </div>
+</header>
+<div class="story-outer">
 
-<pre>
-user data : 
+    <div class="story">
+        <h2>Who is <strong>undressor</strong> ?</h2>
 
-{{ (data | async) | json }}
-</pre>
-     -->
+        <div class="item" [class.active]="i.active" *ngFor="let i of insights" (click)="setItem(i.id)">
+            <h3>{{ i.title }}</h3>
+            <p>{{ i.text }}</p>
+        </div>
+
+    </div>
+</div>
+<div class="data">
+    <img src="assets/dummy/chart-weekly.png" />
+    <img src="assets/dummy/chart-daily.png" />
+</div>
+<div class="profile">
+    <div class="avatar"></div>
+    <div class="name">undressor</div>
+    <div class="claim">Only when the clothes fall does the true soul become visible &centerdot; data fetish &centerdot; bot &centerdot; ai</div>
+    <div class="location">
+        <fa-icon [icon]="faLocationDot"></fa-icon>
+        <span>omnipresent</span>
+    </div>
+    <div class="follower">
+        <app-singlebar [data]="profile.flollower"></app-singlebar>
+    </div>
+    <div class="tweets">
+        <app-singlebar [data]="profile.tweets"></app-singlebar>
+    </div>
+    <div class="exp"> 
+        <!-- on twitter for<br/>  -->
+        <div class="since">
+            since <br/> <span class="val">May 13th, 2007</span>
+        </div>
+        <div class="for">
+            for <span class="val">3</span><br/> months
+        </div>
+    </div>
+    <div style="font-size: .8rem; padding-top: 20px">on twitter</div>
+</div>
+<app-footer></app-footer>
+<app-navbar [class.out]="navOut"></app-navbar>

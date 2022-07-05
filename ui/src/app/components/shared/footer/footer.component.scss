@@ -1,0 +1,22 @@
+:host {
+    position: absolute;    
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-left: 70px;
+    height: 40px;
+    background-color: #0000000e;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;    
+    font-size: .8rem;
+    gap: 10px;
+
+
+    :first-child {
+        font-size: 1.1rem;
+    }
+
+}

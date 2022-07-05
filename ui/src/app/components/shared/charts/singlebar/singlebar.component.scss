@@ -1,0 +1,66 @@
+:host {
+    
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    
+    .bar {
+        display: flex;
+        width: 100%;
+        height: 30px;
+
+        :nth-child(1n) {
+            flex: auto;
+            color: #82c2c0;
+            font-size: .8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+        }        
+
+        :nth-child(1) {
+            background-color: #2e4748;
+        }
+
+        :nth-child(2) {
+            background-color: #476062;
+        }
+        :nth-child(3) {
+            background-color: #62797b;
+        }           
+        :nth-child(4) {
+            background-color: #8ba9ab;
+            color: #000;
+        }                     
+    }
+
+    .labels {
+        position: relative;
+        width: 100%;
+        overflow: hidden;     
+        padding-top: 10px;
+        display: flex;          
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;    
+        align-items: center;  
+        
+        
+        div {
+            font-size: .8rem;
+            color: #000;
+        }
+
+        span {
+            font-size: .6rem;
+            color: #4a737c;
+        }
+        
+        :last-child{
+            display: none;
+        }
+
+    }
+}
