@@ -1,0 +1,54 @@
+@import '../../../styles.variables';
+
+@media #{$tablet} {
+    :host{
+        .faces {
+            .face-item {
+                width: 25%;
+            }
+        }
+        .area {
+            height: 35%;
+
+            .tname {
+                width: 50%;
+            }
+
+
+        }
+    }      
+}
+
+@media #{$phone} {
+    :host{
+        .faces {
+            .face-item {
+                width: 33.3%;
+            }
+        }
+
+        .area {
+            height: 50%;
+
+            .tname {
+                width: 80%;
+            }
+
+            .claim {
+                white-space: unset;
+                width: 80%;
+                animation: none;
+            }
+        }
+    }      
+    
+}
+
+@media screen and (max-height:450px) {
+    :host{
+        .area {
+            height: 50%;
+        }
+    }      
+    
+}

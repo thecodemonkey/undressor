@@ -1,3 +1,5 @@
+@import '../../../../styles.variables';
+
 :host {
     position: absolute;
     left: -105%;
@@ -92,7 +94,7 @@
 }
 
 
-@media screen and (max-width:450px) {
+@media  #{$phone} {
     :host {
         width: 100%;
     }

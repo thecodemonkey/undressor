@@ -1,3 +1,5 @@
+@import '../../../styles.variables';
+
 :host {
     height: 100vh;
     color: #000;
@@ -9,12 +11,11 @@
     align-items: center;
 
     .box {
-        width: 400px;
-        margin-bottom: 200px;
+        max-width: 400px;
+        padding: 0 25px;
+    }
 
-        .avatar {
-            display: inline-block;
-            clear: both;
+    .avatar {
             background-size: cover;
             background-position: center;
             margin-bottom: 50px;
@@ -23,8 +24,5 @@
             height: 200px;
             border-radius: 100%;
             border: 10px solid #8fa3a3;
-        }
     }
-
-
 }

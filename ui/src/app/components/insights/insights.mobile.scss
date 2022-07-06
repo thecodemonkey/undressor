@@ -1,4 +1,66 @@
-@media screen and (max-width:450px) {
+@import '../../../styles.variables';
+
+
+
+@media #{$tablet} {
+    :host {
+
+        .story-outer {
+            flex:1.5;
+            order: 1;
+
+            background-color: #bfd5cd;
+
+            .story {
+                
+
+                h2 {
+                    padding: 0px 25px 50px 25px;
+                }
+
+                .item {
+                    padding: 35px 25px;
+
+                    .btn-data {
+                        display: block;
+                    };                    
+                }
+            }
+        }        
+
+        .profile {
+            flex: .8;
+            order: 2;
+            background: linear-gradient(180deg, rgba(141,163,165,1) 0%, rgba(191,213,205,1) 100%);
+
+            justify-content: space-evenly;
+            padding: 0 25px;
+            height: 100vh;
+
+            .avatar{
+                margin-top: 25px;
+            }
+
+            .name{
+                height: auto;
+            }
+
+            div:nth-child(1n) {
+                padding-top: unset;
+            }
+        }
+
+
+
+        .data {
+            display: none;
+        }
+
+    }
+    
+}
+
+@media #{$phone} {
     :host {
         flex-flow: column;
 
@@ -13,6 +75,7 @@
 
             .avatar{
                 margin-top: 25px;
+                
             }
 
             .name{
@@ -57,3 +120,5 @@
     }
     
 }
+
+

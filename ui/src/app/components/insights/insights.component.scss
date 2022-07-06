@@ -87,9 +87,11 @@
             background-repeat: no-repeat;
             background-size: cover;
             height: 150px;
+            min-height: 150px;
             width: 150px;
             border-radius: 100%;
-            outline: 10px solid #00000011;
+            // outline: 10px solid #00000011;
+            border: 10px solid #90a4a3;
             
         }
 

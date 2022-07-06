@@ -1,3 +1,5 @@
+@import '../../../../styles.variables';
+
 :host {
     position: absolute;
     z-index: 9;
@@ -58,21 +60,28 @@
     }
 }
 
-@media screen and (max-width:450px) {
+
+@media #{$tablet} {
+    :host{
+        .search {
+            input {
+                background-color:#889c9d44;
+                width: 150px;
+            }
+        }
+    }
+}
+
+@media  #{$phone} {
 
     :host{
-
         .menu {
-
             .bar {
                 left: 25px;
             }            
-
         }
-
         .search {
             display: none;
         }
-
     }
 }
