@@ -17,3 +17,44 @@ html, body {
 h1, h2, h3 {
     font-weight: 400;
 }
+
+a {
+    color: rgb(189, 255, 245);
+    text-decoration: none;
+    
+    &:hover {
+        color: #fff;
+    }
+}
+
+button {
+    border: none;
+    padding: 10px 20px;
+    background-color: #171D1E;
+    color: #8CBCBA;
+    font-size: 1rem;
+
+
+}
+
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #4a737c #ffffff;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #cfdadc;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #455a5f;
+    border-radius: 10px;
+    
+  }

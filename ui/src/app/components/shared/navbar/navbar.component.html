@@ -1,0 +1,7 @@
+<div class="close" (click)="state.toggleNavbar()">
+    <span></span><span></span>
+</div>
+
+<div class="item" [class.active]="i.active" *ngFor="let i of nav" (click)="navigate(i.url)">
+    <fa-icon [icon]="i.icon"></fa-icon> 
+{{i.title}}</div>

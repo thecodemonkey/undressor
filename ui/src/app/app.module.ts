@@ -14,7 +14,9 @@ import { LoaderComponent } from './components/shared/loader/loader.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SinglebarComponent } from './components/shared/charts/singlebar/singlebar.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
+import { NavbarComponent } from './components/shared/navbar/navbar.component';
+import { AboutComponent } from './components/about/about.component';
+import { HeaderComponent } from './components/shared/header/header.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     LoaderComponent,
     FooterComponent,
     SinglebarComponent,
-    NavbarComponent
+    NavbarComponent,
+    AboutComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

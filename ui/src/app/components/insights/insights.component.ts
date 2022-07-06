@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { ApiService } from 'src/app/api.service';
 import { Insights } from 'src/app/model/insights';
-import { faBars, faMagnifyingGlass, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faMagnifyingGlass, faLocationDot, faChartColumn } from '@fortawesome/free-solid-svg-icons';
+import { State } from 'src/app/state';
 
 @Component({
   templateUrl: './insights.component.html',
@@ -20,16 +21,17 @@ export class InsightsComponent implements OnInit {
   faBars = faBars;
   faMagnifyingGlass = faMagnifyingGlass;
   faLocationDot = faLocationDot;
+  faChartColumn = faChartColumn;
 
-  constructor(private api:ApiService, private route: ActivatedRoute) { }
+  constructor(private api:ApiService, private route: ActivatedRoute, public state: State) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.twitterName = params['name'] || 'none';
 
-      if (this.twitterName !== 'none') {
+      // if (this.twitterName !== 'none') {
         this.load(this.twitterName);
-      }
+      //}
     });
   }
 

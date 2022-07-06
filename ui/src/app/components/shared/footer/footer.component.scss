@@ -8,7 +8,7 @@
     background-color: #0000000e;
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;    
     font-size: .8rem;
@@ -19,4 +19,19 @@
         font-size: 1.1rem;
     }
 
+}
+
+
+@media screen and (max-width:450px) {
+    :host{
+
+        position: relative;
+        bottom: unset;
+        left: unset;
+        right: unset;
+        height: auto;
+        padding: 20px 25px;
+ 
+        background-color: #b0c3bc;
+    }
 }

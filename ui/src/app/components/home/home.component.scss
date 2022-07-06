@@ -53,7 +53,7 @@
 
         animation: fadein 1s ease-in 1 forwards 3s;
     
-        backdrop-filter: blur(8px);
+        backdrop-filter: blur(4px);
         transition: all .5s;
 
         &.off {
@@ -71,7 +71,7 @@
             bottom: 0;
             right: 0;
             background-color: rgb(16, 24, 24);
-            opacity: .4;
+            opacity: .5;
             z-index: 0;
         }
     
@@ -82,7 +82,7 @@
             text-shadow: 2px 2px #000;
         
             color: #ffffff;
-            font-family: 'Courier New', Courier, monospace;
+
         
             overflow: hidden;
             white-space: nowrap; 
@@ -101,7 +101,7 @@
         }        
     
         .tname {
-            width: 40%;
+            width: 20%;
             height: 40px;
             background-color: #000;
             border: none;

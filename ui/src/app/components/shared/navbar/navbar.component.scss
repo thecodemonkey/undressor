@@ -1,6 +1,6 @@
 :host {
     position: absolute;
-    left: -302px;
+    left: -105%;
     top: 0;
     bottom: 0;
     width: 300px;
@@ -57,10 +57,43 @@
 
     .close {
         position: absolute;
-        top: 20px; 
+        top: 25px; 
         left: 40px;
-        color: #5a7271;
-        font-size: 2rem;
+        width: 30px;
+        height: 30px;
         cursor: pointer;
+
+        &:hover {
+            &:before, &:after {
+                background-color: #8cbcba;
+                box-shadow: 1px 1px 45px 0 #b7e9e6;
+            }
+        }
+
+        &:before, &:after {
+            position: absolute;
+            left: 15px;
+            content: ' ';
+            height: 25px;
+            width: 2px;
+            background-color: #8cbcba88;
+            transition: all .5s;
+
+        }
+
+        &:before {
+            transform: rotate(45deg);
+        }
+
+        &:after {
+            transform: rotate(-45deg);
+        }
+    }
+}
+
+
+@media screen and (max-width:450px) {
+    :host {
+        width: 100%;
     }
 }

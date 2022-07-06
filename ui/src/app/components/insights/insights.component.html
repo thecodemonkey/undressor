@@ -1,21 +1,12 @@
-<header>
-    <div class="menu">
-        <!-- <fa-icon [icon]="faBars"></fa-icon> -->
-        <div class="bar" (click)="navOut = !navOut"><span></span><span></span><span></span></div>
-    </div>
-    <div class="search">
-        <input type="text" />
-        <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
-    </div>
-</header>
+<app-header></app-header>
 <div class="story-outer">
-
     <div class="story">
         <h2>Who is <strong>undressor</strong> ?</h2>
 
         <div class="item" [class.active]="i.active" *ngFor="let i of insights" (click)="setItem(i.id)">
             <h3>{{ i.title }}</h3>
             <p>{{ i.text }}</p>
+            <button class="btn-data"><fa-icon [icon]="faChartColumn"></fa-icon></button>
         </div>
 
     </div>
@@ -44,10 +35,10 @@
             since <br/> <span class="val">May 13th, 2007</span>
         </div>
         <div class="for">
-            for <span class="val">3</span><br/> months
+            for <span class="val">3</span><br/> months on twitter
         </div>
     </div>
-    <div style="font-size: .8rem; padding-top: 20px">on twitter</div>
+    <!-- <div style="font-size: .8rem; padding-top: 20px">on twitter</div> -->
 </div>
 <app-footer></app-footer>
-<app-navbar [class.out]="navOut"></app-navbar>
+<app-navbar [class.out]="state.navbarOn.val$ | async"></app-navbar>

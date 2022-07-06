@@ -1,0 +1,61 @@
+@media screen and (max-width:450px) {
+    :host {
+        flex-flow: column;
+
+        .profile {
+            flex: none;
+            order: 1;
+            background: linear-gradient(180deg, rgba(141,163,165,1) 0%, rgba(191,213,205,1) 100%);
+
+            justify-content: space-evenly;
+            padding: 0 25px;
+            height: 100vh;
+
+            .avatar{
+                margin-top: 25px;
+            }
+
+            .name{
+                height: auto;
+            }
+
+            div:nth-child(1n) {
+                padding-top: unset;
+            }
+        }
+
+        .story-outer {
+            order: 2;
+            flex: none;
+            background-color: #bfd5cd;
+
+            .story {
+                position: relative;
+                top: unset;
+                bottom: unset;
+
+                h2 {
+                    padding: 0px 25px 50px 25px;
+                }
+
+                .item {
+                    padding: 20px 25px;
+
+                    .btn-data {
+                        display: block;
+                    };                    
+                }
+            }
+        }
+
+        .data {
+            display: none;
+        }
+
+        app-footer {
+            position: relative;
+            order: 4;
+        }
+    }
+    
+}
