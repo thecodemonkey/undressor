@@ -1,6 +1,7 @@
 import { CronJob } from 'cron';
 import * as db from './db';
 import * as tclient from './twitter.proxy';
+import { urlToBuffer } from './utils'
 
 
 async function run() {
@@ -16,8 +17,15 @@ async function run() {
             console.log('persist lastmention...', lastmention);
             await db.updateLastMention(lastmention);
 
-            const url = `${process.env.BASE_URL}insights/undressor`
-            tclient.reply(`reply 2... ${url}`, lastmention.id);
+
+            // generate images...
+            const imageBuffers = await Promise.all([ 'https://raw.githubusercontent.com/thecodemonkey/undressor/main/ui/src/assets/dummy/chart-daily.png', 'https://raw.githubusercontent.com/thecodemonkey/undressor/main/ui/src/assets/dummy/chart-weekly.png'].map(u => urlToBuffer(u)));
+
+            // generate images end.
+
+
+            const url = `${process.env.BASE_URL}insights/undressor`;
+            tclient.reply(`reply 2... ${url}`, lastmention.id, imageBuffers);
         }
     }
     catch(e)

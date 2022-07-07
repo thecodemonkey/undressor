@@ -1,5 +1,6 @@
 import { Console } from 'console';
-import { TwitterApi } from 'twitter-api-v2';
+import { request } from 'http';
+import { SendTweetV2Params, TwitterApi } from 'twitter-api-v2';
 import { initClient, initOAuth1Client, initROClient } from './twitter.config'
 
 
@@ -16,11 +17,21 @@ async function getProfile(twittername: string) {
 }
 
 
-async function reply(text: string, tweetid: string) {
+async function reply(text: string, tweetid: string, images?:Buffer[]) {
     const tclient = initOAuth1Client();
 
-    const res = await tclient.v2.reply(text, tweetid);
+    const params:Partial<SendTweetV2Params> = { media : {} };
 
+    if (images && images.length > 0) {
+
+        params.media.media_ids = await Promise.all(
+            images.map(i => tclient.v1.uploadMedia(i, { type: 'png' }))
+        );
+    }
+
+
+
+    const res = await tclient.v2.reply(text, tweetid, params);
     console.debug('send reply', JSON.stringify(res, null, 4));
 }
 
