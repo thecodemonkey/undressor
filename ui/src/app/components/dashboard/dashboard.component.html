@@ -1,8 +1,8 @@
-<!-- <p>dashboard works! {{twitterName}}</p>
+<app-header></app-header>
 
-<pre>
-user data : 
+<div class="dashboard">
 
-{{ (data | async) | json }}
-</pre> 
-     -->
+</div>
+
+<app-footer></app-footer>
+<app-navbar [class.out]="state.navbarOn.val$ | async"></app-navbar>

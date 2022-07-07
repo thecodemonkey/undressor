@@ -1,0 +1,24 @@
+@import '../../../styles.variables';
+
+
+@media #{$tablet} {
+    :host {
+        flex-direction: column;
+
+        .dashboard {
+            margin-left: 55px;
+        }        
+
+        app-footer {
+            position: relative;
+        }
+    }
+}
+
+@media #{$phone} {
+    :host {
+        .dashboard {
+            margin: 50px 25px 50px 15px;
+        }
+    }
+}
