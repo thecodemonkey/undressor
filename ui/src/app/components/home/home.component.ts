@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { ViewportScroller } from '@angular/common';
+import { HtmlParser } from '@angular/compiler';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { FormControl, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of, map, timer } from 'rxjs';
 import { ApiService } from 'src/app/api.service';
@@ -9,7 +11,8 @@ import { ApiService } from 'src/app/api.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  name = new FormControl('');
+  mainForm = this.formBuilder.group({ name: '' });
+// 
   faces:any[] = [];
 
   continous: boolean = false;
@@ -21,7 +24,24 @@ export class HomeComponent implements OnInit {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
  
-  constructor(private api:ApiService, private router: Router) { }
+  constructor(
+    private api:ApiService, 
+    private router: Router, 
+    private scroller: ViewportScroller,
+    private formBuilder: FormBuilder) { }
+
+
+  @HostListener('touchend', ['$event'])
+  onTouch(e: TouchEvent) {   
+    const t = e.target as HTMLElement;
+    console.log('e', t.nodeName);
+    
+
+    if (t.nodeName != 'INPUT') {
+      e.preventDefault();
+    }
+  }
+
 
   ngOnInit(): void {  
     for(let x=0; x < 24; x++) {
@@ -31,17 +51,18 @@ export class HomeComponent implements OnInit {
     this.openFaces();
   }
 
-  load() {
-    const tname = this.name.getRawValue() || '';
+  onSubmit() {
+    if (!this.loading) {
+      const tname = this.mainForm.getRawValue().name || '';
+      this.loading = true;
 
-    this.loading = true;
-
-    timer(3000).subscribe(() => {
-      this.loading = false;
-      this.unload = true;
-      this.continous = false;
-      this.closeFaces();
-    });
+      timer(3000).subscribe(() => {
+        this.loading = false;
+        this.unload = true;
+        this.continous = false;
+        this.closeFaces();
+      });
+    }
   }
 
 
@@ -60,9 +81,9 @@ export class HomeComponent implements OnInit {
 
   flipFacesContinous() {
     if (this.continous) {
+      
       const off_f = this.faces.find(f => f.off);
       if(off_f) off_f.off = false; 
-      
       
       this.faces[this.rnd(0, this.faces.length -1)].off = true;
 
@@ -87,8 +108,13 @@ export class HomeComponent implements OnInit {
   }
 
   goToInsightsView() {
-    const tname = this.name.getRawValue() || '';
+    const tname = this.mainForm.getRawValue().name || '';
     this.router.navigate([`/insights/${tname}`]);
+  }
+
+  onBlur() {
+    this.scroller.scrollToPosition([0,0]);
+    this.onSubmit();
   }
 }  
 

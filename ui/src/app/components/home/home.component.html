@@ -5,6 +5,10 @@
 <div class="area" [class.off]="unload">
     <div class="bg-dark"></div>
     <span class="claim" [class.off]="loading || unload">Only when the clothes fall does the true soul become visible.</span>
-    <input class="tname" [class.off]="loading || unload" type="text" placeholder="type twitter name without '@' " [formControl]="name" (keyup.enter)="load()">
+    <form [formGroup]="mainForm" (ngSubmit)="onSubmit()">
+        <input class="tname" [class.off]="loading || unload" type="text" 
+        placeholder="type twitter name without '@' " 
+        formControlName="name" (blur)='onBlur()'>
+    </form>
     <app-loader class="loader" *ngIf="loading"></app-loader>
 </div>

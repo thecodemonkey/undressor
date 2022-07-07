@@ -1,0 +1,54 @@
+@import '../../../styles.variables';
+
+
+@media #{$tablet} {
+    :host {
+        height: unset;
+        flex-direction: column;
+
+        .page {
+            overflow-y: unset;
+
+            .section {
+                flex-direction: column;
+
+                .content {
+                    padding-right: 0;
+                }
+
+                .images {
+                    margin: 20px -70px;
+                    padding: 70px;
+                    background-color: #00000011;
+                }
+            }
+        }
+
+        .bg-right {
+            display: none;
+        }
+
+        app-footer {
+            position: relative;
+        }
+    }
+}
+
+@media #{$phone} {
+    :host {
+        .page {
+            h2 {
+                padding-left: 25px;
+            }
+
+            .section {
+                padding: 40px 25px;   
+
+                .images {
+                    margin: 20px -25px;
+                    padding: 25px;
+                }
+            }
+        }
+    }
+}

@@ -3,10 +3,14 @@
     <div class="story">
         <h2>Who is <strong>undressor</strong> ?</h2>
 
-        <div class="item" [class.active]="i.active" *ngFor="let i of insights" (click)="setItem(i.id)">
+        <div [id]="'cnt-' + i.id" class="item" [class.active]="i.active" *ngFor="let i of insights" >
             <h3>{{ i.title }}</h3>
             <p>{{ i.text }}</p>
-            <button class="btn-data"><fa-icon [icon]="faChartColumn"></fa-icon></button>
+            <button [id]="'dat-' + i.id" class="btn-data" (click)="toggleItem(i.id)"><fa-icon [icon]="faChartColumn"></fa-icon></button>
+            <div class="mobile-data" [class.on]="i.active">
+                <img src="assets/dummy/chart-weekly.png" />
+                <img src="assets/dummy/chart-daily.png" />
+            </div>
         </div>
 
     </div>

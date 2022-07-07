@@ -4,6 +4,9 @@
     flex-flow: row;
     align-items: stretch;
 
+    background: rgb(141,163,165);
+    background: linear-gradient(180deg, rgba(141,163,165,1) 0%, rgba(191,213,205,1) 100%);
+
 
     h2 {
         padding: 0 70px;
@@ -25,24 +28,27 @@
             row-gap: 0px;
     
             overflow-y: auto;    
+            overflow-x: hidden;
+            scroll-behavior: smooth;
 
             .item {
                 padding: 20px 70px;
                 border-left: 2px solid transparent;
-                cursor: pointer;
+                
                 transition: all .5s;
 
                 .btn-data {
-                    display: none;
+                    display: block;
+                    cursor: pointer;
                 };
 
                 &.active {
                     border-color: #2c3c40;
                     background-color: #00000008;
+                }
 
-
-
-
+                .mobile-data {
+                    display: none;
                 }
             }
         }
@@ -80,6 +86,7 @@
         align-items: center;
         padding: 100px 30px 100px 30px;
         font-weight: 400;
+        overflow: hidden;
         
 
         .avatar {

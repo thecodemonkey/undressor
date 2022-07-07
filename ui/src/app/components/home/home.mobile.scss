@@ -8,10 +8,18 @@
             }
         }
         .area {
+            border-color: #5CECFF88;
             height: 35%;
 
             .tname {
                 width: 50%;
+
+                
+                &::placeholder{
+                    letter-spacing: normal;
+                    font-size: .8rem;
+                    color: #555;
+                }
             }
 
 
@@ -28,7 +36,8 @@
         }
 
         .area {
-            height: 50%;
+            height: 35%;
+            border-color: #5CECFFaa;
 
             .tname {
                 width: 80%;

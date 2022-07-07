@@ -1,8 +1,20 @@
 :host {
-    height: 100vh;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    overflow: hidden;
+    background-color: #000;
+
     display:flex;
     justify-content: center;
     flex-direction: column;
+
+    touch-action: none;
+
+    margin: 0;
+    padding: 0;
 
     .faces {
         position:absolute;
@@ -57,7 +69,12 @@
         transition: all .5s;
 
         &.off {
-            opacity: 0!important;
+            animation: fadeout 1s ease-in 1 forwards;
+        }
+
+        form{
+            z-index: 2;
+            width: 100%;
         }
 
         .loader {
@@ -70,8 +87,8 @@
             top: 0;
             bottom: 0;
             right: 0;
-            background-color: rgb(16, 24, 24);
-            opacity: .5;
+            background-color: #000;
+            opacity: .6;
             z-index: 0;
         }
     
@@ -120,7 +137,9 @@
             }
 
             &::placeholder{
-                letter-spacing: normal
+                letter-spacing: normal;
+                font-size: .8rem;
+                color: #888;
             }
 
             &.off {
@@ -156,6 +175,12 @@
     from { opacity : 0;}
     to { opacity: 1;}
 }
+
+@keyframes fadeout {
+    from { opacity : 1;}
+    to { opacity: 0;}
+}
+
 
 
 @import 'home.mobile.scss';

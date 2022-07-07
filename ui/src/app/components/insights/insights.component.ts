@@ -5,6 +5,7 @@ import { ApiService } from 'src/app/api.service';
 import { Insights } from 'src/app/model/insights';
 import { faBars, faMagnifyingGlass, faLocationDot, faChartColumn } from '@fortawesome/free-solid-svg-icons';
 import { State } from 'src/app/state';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   templateUrl: './insights.component.html',
@@ -23,7 +24,10 @@ export class InsightsComponent implements OnInit {
   faLocationDot = faLocationDot;
   faChartColumn = faChartColumn;
 
-  constructor(private api:ApiService, private route: ActivatedRoute, public state: State) { }
+  constructor(private api:ApiService, 
+    private route: ActivatedRoute, 
+    public state: State, 
+    private scroller: ViewportScroller) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -63,6 +67,19 @@ export class InsightsComponent implements OnInit {
     this.insights.forEach(i => { 
       i.active = i.id == id;
     });
+
+  }
+
+  toggleItem(id: number) {
+    
+    const item = this.insights.find(i => i.id == id);
+    if (item) {
+      item.active = !item.active;
+
+      const achorId = item.active? `dat-${id}` : `cnt-${id}` 
+      this.scroller.scrollToAnchor(achorId);
+      
+    }
 
   }
 

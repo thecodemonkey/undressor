@@ -3,21 +3,18 @@
 
 
 
-
-
-
-
 html, body {
     min-height: 100vh;
     height: auto;
     margin: 0;
+    padding: 0;
 
-    background: rgb(141,163,165);
-    background: linear-gradient(180deg, rgba(141,163,165,1) 0%, rgba(191,213,205,1) 100%);
+    background-color: #000;
 
     font-family: 'Jura', sans-serif;
     font-weight: 300;
     font-size: 1.1rem;
+    scroll-behavior: smooth;
 }
 
 
@@ -40,15 +37,21 @@ button {
     background-color: #171D1E;
     color: #8CBCBA;
     font-size: 1rem;
+    outline: none!important;
+    user-select: none;
 
+}
 
+.bg-light {
+  background: rgb(141,163,165);
+  background: linear-gradient(180deg, rgba(141,163,165,1) 0%, rgba(191,213,205,1) 100%);
 }
 
 /* ===== Scrollbar CSS ===== */
   /* Firefox */
   * {
     scrollbar-width: auto;
-    scrollbar-color: #4a737c #ffffff;
+    scrollbar-color: #cfdadc #455a5f;
   }
 
   /* Chrome, Edge, and Safari */
@@ -62,6 +65,5 @@ button {
 
   *::-webkit-scrollbar-thumb {
     background-color: #455a5f;
-    border-radius: 10px;
-    
+    border-radius: 10px;    
   }
