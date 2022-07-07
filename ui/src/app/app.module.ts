@@ -17,6 +17,7 @@ import { SinglebarComponent } from './components/shared/charts/singlebar/singleb
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { AboutComponent } from './components/about/about.component';
 import { HeaderComponent } from './components/shared/header/header.component';
+import { ImagesComponent } from './components/images/images.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { HeaderComponent } from './components/shared/header/header.component';
     SinglebarComponent,
     NavbarComponent,
     AboutComponent,
-    HeaderComponent
+    HeaderComponent,
+    ImagesComponent
   ],
   imports: [
     BrowserModule,

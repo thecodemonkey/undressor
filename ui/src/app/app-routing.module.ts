@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from './components/about/about.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { HomeComponent } from './components/home/home.component';
-import { InsightsComponent } from './components/insights/insights.component';
+import { HomeComponent } from './components/home/home.component';                 
+import { ImagesComponent } from './components/images/images.component';         
+import { InsightsComponent } from './components/insights/insights.component'; 
 import { NotfoundComponent } from './components/notfound/notfound.component';
 
 const routes: Routes = [
@@ -13,6 +14,8 @@ const routes: Routes = [
   { path: 'dashboard/:name', component: DashboardComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'images/:id', component: ImagesComponent },
+  { path: 'images', component: ImagesComponent },
   { path: '',   component: HomeComponent, pathMatch: 'full' },
   { path: '**',   component: NotfoundComponent } 
 ];
