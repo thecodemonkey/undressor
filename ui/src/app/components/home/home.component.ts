@@ -3,6 +3,7 @@ import { HtmlParser } from '@angular/compiler';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormControl, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, map, timer } from 'rxjs';
 import { ApiService } from 'src/app/api.service';
 
@@ -28,7 +29,8 @@ export class HomeComponent implements OnInit {
     private api:ApiService, 
     private router: Router, 
     private scroller: ViewportScroller,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private devices: DeviceDetectorService) { }
 
 
   @HostListener('touchend', ['$event'])
@@ -81,7 +83,7 @@ export class HomeComponent implements OnInit {
 
   flipFacesContinous() {
     if (this.continous) {
-      
+
       const off_f = this.faces.find(f => f.off);
       if(off_f) off_f.off = false; 
       
@@ -114,7 +116,11 @@ export class HomeComponent implements OnInit {
 
   onBlur() {
     this.scroller.scrollToPosition([0,0]);
-    this.onSubmit();
+
+
+    if (!this.devices.isDesktop) {
+      this.onSubmit();
+    }
   }
 }  
 

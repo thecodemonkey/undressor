@@ -49,7 +49,10 @@
     
 
     .area {
-        border: .5px solid #5CECFF55;
+        border: 0px solid #5CECFF55;
+
+        box-shadow: 0 0 55px 0 #85f7ff55;
+
         border-right: none;
         border-left: none;    
     
@@ -123,7 +126,8 @@
             background-color: #000;
             border: none;
             padding-left: 20px;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            font-weight: 300;
             letter-spacing: .1rem;
             color: #98d3dc;
 
@@ -131,6 +135,7 @@
             box-shadow: 2px 2px 45px 0px #ffffff55;
             transition: all .5s;
             z-index: 1;
+            border-bottom: 1px solid #98d3dc;
         
             &:focus {
                 box-shadow: 2px 2px 65px 0px #94dde7bb;

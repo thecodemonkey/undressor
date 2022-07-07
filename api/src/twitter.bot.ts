@@ -1,7 +1,7 @@
 import { CronJob } from 'cron';
 import * as db from './db';
 import * as tclient from './twitter.proxy';
-import { urlToBuffer } from './utils'
+import { imageUrlToBuffer } from './utils'
 
 
 async function run() {
@@ -19,7 +19,7 @@ async function run() {
 
 
             // generate images...
-            const imageBuffers = await Promise.all([ 'https://raw.githubusercontent.com/thecodemonkey/undressor/main/ui/src/assets/dummy/chart-daily.png', 'https://raw.githubusercontent.com/thecodemonkey/undressor/main/ui/src/assets/dummy/chart-weekly.png'].map(u => urlToBuffer(u)));
+            const imageBuffers = await Promise.all([ 'https://raw.githubusercontent.com/thecodemonkey/undressor/main/ui/src/assets/dummy/chart-daily.png', 'https://raw.githubusercontent.com/thecodemonkey/undressor/main/ui/src/assets/dummy/chart-weekly.png'].map(u => imageUrlToBuffer(u)));
 
             // generate images end.
 
