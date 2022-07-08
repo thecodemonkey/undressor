@@ -18,6 +18,10 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { AboutComponent } from './components/about/about.component';
 import { HeaderComponent } from './components/shared/header/header.component';
 import { ImagesComponent } from './components/images/images.component';
+import { NgChartsModule } from 'ng2-charts';
+import { PolarComponent } from './components/shared/charts/polar/polar.component';
+import { RadarComponent } from './components/shared/charts/radar/radar.component';
+import { RingComponent } from './components/shared/charts/ring/ring.component';
 
 @NgModule({
   declarations: [
@@ -33,14 +37,18 @@ import { ImagesComponent } from './components/images/images.component';
     NavbarComponent,
     AboutComponent,
     HeaderComponent,
-    ImagesComponent
+    ImagesComponent,
+    PolarComponent,
+    RadarComponent,
+    RingComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

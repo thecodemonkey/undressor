@@ -1,0 +1,10 @@
+<canvas #chart="base-chart" baseChart 
+    [legend]="showLegend"
+    [data]="data"
+    type="doughnut"
+    [options]="options">
+</canvas>
+
+<div class="labels" #lbl>
+    <span *ngFor="let l of labels">{{l}}</span>
+</div>

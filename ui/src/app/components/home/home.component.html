@@ -8,7 +8,7 @@
     <form [formGroup]="mainForm" (ngSubmit)="onSubmit()">
         <input class="tname" [class.off]="loading || unload" type="text" 
         placeholder="type twitter name without '@' " 
-        formControlName="name" (blur)='onBlur()'>
+        formControlName="name" (blur)='onBlur()' #fcname>
     </form>
     <app-loader class="loader" *ngIf="loading"></app-loader>
 </div>

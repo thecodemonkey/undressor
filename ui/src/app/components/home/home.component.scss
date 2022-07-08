@@ -49,6 +49,7 @@
     
 
     .area {
+        position: relative;
         border: 0px solid #5CECFF55;
 
         box-shadow: 0 0 55px 0 #85f7ff55;
@@ -57,7 +58,7 @@
         border-left: none;    
     
         text-align: center; 
-        height: 30%;
+        height: 35%;
     
         display:flex;
         justify-content: space-evenly; 
@@ -136,6 +137,7 @@
             transition: all .5s;
             z-index: 1;
             border-bottom: 1px solid #98d3dc;
+            border-radius: 0;
         
             &:focus {
                 box-shadow: 2px 2px 65px 0px #94dde7bb;

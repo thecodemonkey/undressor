@@ -10,11 +10,11 @@ async function start() {
 
     const imageBuffers = await Promise.all(
         [
-            'http://192.168.0.148:4200/#/images/int',
-            'http://192.168.0.148:4200/#/images/lang',
-            'http://192.168.0.148:4200/#/images/daily'
+            { url: 'http://192.168.0.148:4200/#/images/int', dimension: { width: 1080, height: 1350} },
+            { url: 'http://192.168.0.148:4200/#/images/lang', dimension: { width: 1200, height: 675} },
+            { url: 'http://192.168.0.148:4200/#/images/daily', dimension: { width: 1200, height: 675} }
 
-        ].map(u => urlUrlToBuffer(u, { width: 1080, height: 1350}))
+        ].map(u => urlUrlToBuffer(u.url, u.dimension))
     );
 
     twitter.reply('who is behind "undressor"? \r\n\r\nhttps://undressor-ui.herokuapp.com/ ', '1542084253634134016', imageBuffers);

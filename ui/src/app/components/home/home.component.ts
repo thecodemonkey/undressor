@@ -1,6 +1,6 @@
 import { ViewportScroller } from '@angular/common';
 import { HtmlParser } from '@angular/compiler';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -13,6 +13,8 @@ import { ApiService } from 'src/app/api.service';
 })
 export class HomeComponent implements OnInit {
   mainForm = this.formBuilder.group({ name: '' });
+  @ViewChild("fcname") fcName: FormControl;
+
 // 
   faces:any[] = [];
 
@@ -30,7 +32,10 @@ export class HomeComponent implements OnInit {
     private router: Router, 
     private scroller: ViewportScroller,
     private formBuilder: FormBuilder,
-    private devices: DeviceDetectorService) { }
+    private devices: DeviceDetectorService) { 
+      this.fcName = this.mainForm.controls.name;
+
+    }
 
 
   @HostListener('touchend', ['$event'])
@@ -54,8 +59,12 @@ export class HomeComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.loading) {
-      const tname = this.mainForm.getRawValue().name || '';
+
+
+    if (!this.loading && this.name) {
+      
+      (<any> this.fcName).nativeElement.blur();
+
       this.loading = true;
 
       timer(3000).subscribe(() => {
@@ -110,17 +119,21 @@ export class HomeComponent implements OnInit {
   }
 
   goToInsightsView() {
-    const tname = this.mainForm.getRawValue().name || '';
-    this.router.navigate([`/insights/${tname}`]);
+    // const tname = this.mainForm.getRawValue().name || '';
+    this.router.navigate([`/insights/${this.name}`]);
   }
 
   onBlur() {
     this.scroller.scrollToPosition([0,0]);
 
 
-    if (!this.devices.isDesktop) {
+    if (this.devices.isMobile()) {
       this.onSubmit();
     }
+  }
+
+  get name() {
+    return this.mainForm.getRawValue().name || '';
   }
 }  
 
