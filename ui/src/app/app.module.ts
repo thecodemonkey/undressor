@@ -22,6 +22,9 @@ import { NgChartsModule } from 'ng2-charts';
 import { PolarComponent } from './components/shared/charts/polar/polar.component';
 import { RadarComponent } from './components/shared/charts/radar/radar.component';
 import { RingComponent } from './components/shared/charts/ring/ring.component';
+import { LineareaComponent } from './components/shared/charts/linearea/linearea.component';
+import { BarComponent } from './components/shared/charts/bar/bar.component';
+import { TagcloudComponent } from './components/shared/charts/tagcloud/tagcloud.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,10 @@ import { RingComponent } from './components/shared/charts/ring/ring.component';
     ImagesComponent,
     PolarComponent,
     RadarComponent,
-    RingComponent
+    RingComponent,
+    LineareaComponent,
+    BarComponent,
+    TagcloudComponent
   ],
   imports: [
     BrowserModule,

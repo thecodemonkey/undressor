@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { BubbleDataPoint, Chart, ChartData, ChartTypeRegistry, ScatterDataPoint } from 'chart.js';
-import { of } from 'rxjs';
-import { chartConfig } from 'src/app/model/charts.options';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ChartData } from 'chart.js';
+import { chartBgColor } from 'src/app/model/charts.options';
+import { DataValue } from 'src/app/model/dataset';
 import { ChartBaseComponent } from '../chart.base.component';
 
 @Component({
@@ -10,21 +10,16 @@ import { ChartBaseComponent } from '../chart.base.component';
   styleUrls: ['./ring.component.scss']
 })
 export class RingComponent extends ChartBaseComponent {
-  labels = [ 'en', 'de', 'other'];
-  
-
+  @Input() datavalues!: DataValue[];
+ 
   @ViewChild("lbl") elLabels!: ElementRef;
 
-  data: ChartData<'doughnut'> = {
-    labels: this.labels,
-    datasets: [ 
-      { data: [ 80, 20 ] },
-      { data: [ 50, 50 ] },
-      { data: [ 20, 70 ] }
-    ]
-  };
+  data: ChartData<'doughnut'> = {labels: [], datasets: []};
+  bgColors = ['#84BCB9', '#84BCB9aa', '#84BCB944'];
+  lbls = [''];
 
-  udjustLabels = (c: any) => {
+
+  adjustLabels = (c: any) => {
     const ofst = 80;
     const r = c._sortedMetasets[0]?.controller?.innerRadius - ofst;
     if (!isNaN(r)){
@@ -38,26 +33,40 @@ export class RingComponent extends ChartBaseComponent {
     super(); 
     this.showLegend = false;
     
-    delete this.options.scales.r;
     this.options.cutout = '60%';
     this.options.ticks = {
       display: true
     },
 
-    this.options.onResize = this.udjustLabels;
-
-    
+    this.options.onResize = this.adjustLabels;    
+    this.options.datasets.doughnut = {
+      borderColor: chartBgColor,
+      borderWidth: 10
+    }
   }
 
-  override setCustomOptions(chartObject: Chart<keyof ChartTypeRegistry, (number | ScatterDataPoint | BubbleDataPoint | null)[], unknown> | undefined): void {
-    const lg = chartObject?.options.plugins?.legend;
+  override init(chrt: any) {
+    const values = this.datavalues.map(d => d.value).sort((a, b) => (b-a));
+    const max = values[0];
+    const offset = (100 / max * 20);
+
+    this.data.labels = this.datavalues.map(d => d.title);
+    this.data.datasets = values.map((v, i:number) => ({
+          data: [v-offset, max - (v - offset)],
+          backgroundColor:[this.bgColors[i], '#84BCB900']
+      })
+    );
+
+
+    this.lbls = this.datavalues.map(d => d.title || '');
+
+
+    const lg = chrt?.options.plugins?.legend;
     if (lg) {
       lg.position = 'top';
-      lg.labels = chartConfig.legend.labels;
+      lg.labels = this.config.legend.labels;
     }
 
-    this.udjustLabels(this.chart.chart);
-    console.log('legend', lg);
+    this.adjustLabels(this.chart.chart);
   }  
-
 }

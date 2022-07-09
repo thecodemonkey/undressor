@@ -25,7 +25,7 @@ async function reply(text: string, tweetid: string, images?:Buffer[]) {
     if (images && images.length > 0) {
 
         params.media.media_ids = await Promise.all(
-            images.map(i => tclient.v1.uploadMedia(i, { type: 'png' }))
+            images.map(i => tclient.v1.uploadMedia(i, { mimeType: 'image/png' }))
         );
     }
 

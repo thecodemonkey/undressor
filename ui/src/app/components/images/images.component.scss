@@ -17,10 +17,28 @@
 
     .chart-area {
         position: absolute;
-        left: 10%;
-        right: 10%;
+        left: 20px;
+        right: 20px;
         top: 20%;
         bottom: 20%;
         overflow: hidden;
+    }
+
+    .chart-area-tmp {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+
+        :nth-child(1n){
+            position: relative;
+            flex: .5;
+            width: 50%;
+            height: auto;
+        }
     }
 }

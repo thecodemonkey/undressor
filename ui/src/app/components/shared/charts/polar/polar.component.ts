@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BubbleDataPoint, Chart, ChartData, ChartTypeRegistry, ScatterDataPoint } from 'chart.js';
-import { chartConfig } from 'src/app/model/charts.options';
+import { chartBgColor, chartConfig, radialConfig } from 'src/app/model/charts.options';
+import { DataRow, DataValue } from 'src/app/model/dataset';
 import { ChartBaseComponent } from '../chart.base.component';
 
 @Component({
@@ -9,24 +10,46 @@ import { ChartBaseComponent } from '../chart.base.component';
   styleUrls: ['./polar.component.scss']
 })
 export class PolarComponent extends ChartBaseComponent { 
+   @Input() datavalues!: DataValue[];
 
-  data: ChartData<'polarArea'> = {
-    labels: [ 'Download Sales', 'In-Store Sales', 'Mail Sales', 'Telesales', 'Corporate Sales' ],
-    datasets: [ {
-      data: [ 300, 500, 100, 40, 120 ]
-    }]
-  };
+
+  data: ChartData<'polarArea'> = {labels: [], datasets: []};
 
 
   constructor() { 
     super();
+    this.showLegend = false;
+    this.options.scales.r = radialConfig();
+    this.options.scales.r.pointLabels.display = true;
+    this.options.scales.r.pointLabels.centerPointLabels = true;
+
+    this.options.datasets.polarArea = {
+      backgroundColor: ['#84BCB944', '#84BCB9aa', '#84BCB9'],
+      borderColor: chartBgColor,
+      borderWidth: 1
+    }        
   }
 
-  override setCustomOptions(chartObject: Chart<keyof ChartTypeRegistry, (number | ScatterDataPoint | BubbleDataPoint | null)[], unknown> | undefined): void {
-    const lg = chartObject?.options.plugins?.legend;
+  override init(chrt: any) {
+    this.data.labels = this.datavalues.map(d => d.title);
+    this.data.datasets =  [{data: this.datavalues.map(d => d.value)}];
+  
+    const lg = chrt?.options.plugins?.legend;
     if (lg) {
-      lg.position = chartConfig.legend.position;
-      lg.labels = chartConfig.legend.labels;     
+      lg.position = this.config.legend.position;
+      lg.labels = this.config.legend.labels;     
+    }
+
+    const pntlbs = chrt?.options.scales.r.pointLabels;
+    if (pntlbs) {
+      pntlbs.display = true;
+      pntlbs.centerPointLabels = true;
+      pntlbs.padding = 30;
+      pntlbs.font = {
+        family: 'Jura',
+        weight: 300,
+        size: 32
+      }
     }
   }
 }

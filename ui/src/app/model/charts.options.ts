@@ -1,7 +1,11 @@
-import { NONE_TYPE } from '@angular/compiler';
 import { ChartOptions, LayoutPosition } from 'chart.js';
 
-const fontSize = 16;
+export const chartFontSize = 36;
+export const chartLightColor = '#84BCB9';
+export const chartBgColor = '#171D1E';
+export const chartGridColor = '#84BCB944';
+export const chartGridColorY = '#84BCB911';
+export const chartLabelColor = '#84BCB988';
 
 export interface ChartConfig {
     legend: {
@@ -11,54 +15,53 @@ export interface ChartConfig {
     options: ChartOptions
 }
 
-export const chartConfig:ChartConfig = {
-    legend: {
-        position: 'bottom',
-        labels: { font : { size: fontSize } }
+export const radialConfig = () => ({
+    grid: { 
+        color: chartGridColor,
+        circular: true
     },
-    options: {
-        responsive:true, 
-        maintainAspectRatio:false,
-        scales: {
-          r: {
-            grid: { 
-                color: '#84BCB944',
-                circular: true
-            },
-            ticks: { 
-                color: '#84BCB9', 
-                backdropColor: '#171D1E', 
-                backdropPadding: 15
-            },
-            pointLabels: {
-                font: {
-                  size: fontSize,
-                },
-                color: '#84BCB988'
+    ticks: { 
+        color: chartLightColor, 
+        backdropColor: chartBgColor, 
+        backdropPadding: 15,
+        display: false
+    },
+    pointLabels: {
+        font: {
+          size: chartFontSize,
+        },
+        color: chartLabelColor
+   }            
+});
 
-           }            
-          }
+export const axisConfig = () => ({   
+      ticks: {
+        font: {
+          size: chartFontSize
         },
-        datasets: {
-          polarArea: {
-            backgroundColor: ['#84BCB944', '#84BCB9aa', '#84BCB9'],
-            borderColor: '#171D1E',
-            borderWidth: 1
-          },
-          radar: {
-            backgroundColor: ['#84BCB944', '#84BCB9aa', '#84BCB9'],
-            borderColor: '#171D1E',
-            borderWidth: 1,
-            pointBorderWidth: 0,
-            pointRadius: 2,
-            pointBackgroundColor: '#84BCB9'
-          },
-          doughnut: {
-            backgroundColor: ['#84BCB9', '#84BCB901'],
-            borderColor: '#171D1E',
-            borderWidth: 10
-          }
+        color: chartLabelColor
+      },
+      grid: {
+        color: chartGridColorY,
+      }
+ });
+
+
+export function chartConfig(): ChartConfig {
+    return ({
+        legend: {
+            position: 'bottom',
+            labels: { font: { size: chartFontSize } }
         },
-        plugins: {}
-    }
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation : {
+                // duration: 0
+            },
+            scales: { },
+            datasets: { },
+            plugins: {}
+        }
+    });
 }
