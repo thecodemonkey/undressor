@@ -27,8 +27,8 @@ async function start() {
     const imageBuffers = await Promise.all(
         [
             { url: 'http://192.168.0.148:4200/#/images/polar', dimension: { width: 1080, height: 1350} },
-            { url: 'http://192.168.0.148:4200/#/images/radar', dimension: { width: 1080, height: 1350} },
-            { url: 'http://192.168.0.148:4200/#/images/bar', dimension: { width: 1080, height: 1350} }
+            { url: 'http://192.168.0.148:4200/#/images/heat', dimension: { width: 1200, height: 675} },
+            { url: 'http://192.168.0.148:4200/#/images/words', dimension: { width: 1080, height: 1350} }
 
         ].map(u => urlUrlToBuffer(u.url, u.dimension))
     );

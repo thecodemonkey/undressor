@@ -25,6 +25,7 @@ import { RingComponent } from './components/shared/charts/ring/ring.component';
 import { LineareaComponent } from './components/shared/charts/linearea/linearea.component';
 import { BarComponent } from './components/shared/charts/bar/bar.component';
 import { TagcloudComponent } from './components/shared/charts/tagcloud/tagcloud.component';
+import { HeatmapComponent } from './components/shared/charts/heatmap/heatmap.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { TagcloudComponent } from './components/shared/charts/tagcloud/tagcloud.
     RingComponent,
     LineareaComponent,
     BarComponent,
-    TagcloudComponent
+    TagcloudComponent,
+    HeatmapComponent
   ],
   imports: [
     BrowserModule,

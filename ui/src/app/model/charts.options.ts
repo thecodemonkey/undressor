@@ -5,7 +5,7 @@ export const chartLightColor = '#84BCB9';
 export const chartBgColor = '#171D1E';
 export const chartGridColor = '#84BCB944';
 export const chartGridColorY = '#84BCB911';
-export const chartLabelColor = '#84BCB988';
+export const chartLabelColor = '#84BCB9';
 
 export interface ChartConfig {
     legend: {
