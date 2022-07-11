@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { first, flatMap, map, Observable, of, single, tap } from 'rxjs';
+import { ApiService } from 'src/app/api.service';
 import { DataValue } from 'src/app/model/dataset';
 
 @Component({
@@ -8,10 +10,13 @@ import { DataValue } from 'src/app/model/dataset';
 })
 export class ImagesComponent implements OnInit {
   id: string = '';
+  userId: string = '';
+  data$ = new Observable<DataValue[]>();
+  // data: DataValue[] | null = [{ title: 'follower', value: 20}, { title: 'followed', value: 550}, { title: '', value: 0}];
 
   dsInterests: DataValue[] = [{ title: 'politics', value: 130  }, { title: 'science', value: 151  }, { title: 'sport', value: 87  }, { title: 'fashion', value: 2  }, { title: 'society', value: 100  }];
   dsLanguages: DataValue[] = [{ title: 'de', value: 100}, { title: 'en', value: 80}, { title: 'other', value: 5 }];
-
+  dsFolower: DataValue[] = [{ title: 'follower', value: 20}, { title: 'followed', value: 550}, { title: '', value: 0}];
 
   dsWords = [
     { title: 'word', value: 10 },
@@ -92,13 +97,51 @@ export class ImagesComponent implements OnInit {
     { title: 'always', value: 1 }
   ];
 
+  constructor(private api: ApiService, private route: ActivatedRoute) { 
 
-  constructor(private route: ActivatedRoute) {  }
+    this.data$ = this.api.getProfileBasics('chillya');
+   }
 
   ngOnInit(): void {
+    
+    this.data$ = of(this.dsFolower);
+
     this.route.params.subscribe(params => {
       this.id = params['id'] || '';
+      this.userId = params['userid'] || '';
+
+      this.loadData();
     });    
   }
 
+  loadData() {
+    switch(this.id) {
+      case 'interests': // polar
+        //this.data$ = this.api.getInterests(this.userId);
+        break;
+      case 'hashtags':
+        //this.data$ = this.api.getHashtags(this.userId);
+        break;
+      case 'weekly':
+        //this.data$ = this.api.getWeeklyUsage(this.userId);
+        break;
+      case 'basics':
+        //this.data$ = of([{ title: 'follower', value: 20}, { title: 'followed', value: 550}, { title: '', value: 0}])
+        // this.data$ = this.api.getProfileBasics(this.userId)
+        //                      .pipe(map(r => ([
+        //                           { title: 'follower', value: 0}, 
+        //                           { title: 'followed', value: 9}, 
+        //                           { title: 'listed', value: 9}
+        //                       ]) as DataValue[]
+        //                      ));
+        break;
+
+      case 'radar':
+        break;
+      case 'line':
+        break;
+      case 'bar':
+        break;
+    }
+  }
 }

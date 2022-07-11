@@ -1,5 +1,5 @@
 import * as twitter from './twitter.proxy';
-import { imageUrlToBuffer, save, urlUrlToBuffer } from './utils'
+import { imageUrlToBuffer, rnd, save, urlUrlToBuffer,  } from './utils'
 import fs from 'fs';
 
 async function start() {
@@ -13,35 +13,35 @@ async function start() {
     // const urls = [
     //     { url: 'http://192.168.0.148:4200/#/images/bar', dimension: { width: 1080, height: 1350} },
     //     { url: 'http://192.168.0.148:4200/#/images/words', dimension: { width: 1080, height: 1350} },
-
     //     { url: 'http://192.168.0.148:4200/#/images/line', dimension: { width: 1080, height: 1350} }
-
     // ];
+
 
     // for (const u of urls ) {
     //     const b = await urlUrlToBuffer(u.url, u.dimension, 5000);
     //     await save(`./tmp/img-${ Date.now() }.png`, b)
     // }
 
+    const landscape =  { width: 1200, height: 675 }
+    const portrait =  { width: 1080, height: 1350 }
+
 
     const imageBuffers = await Promise.all(
         [
-            { url: 'http://192.168.0.148:4200/#/images/polar', dimension: { width: 1080, height: 1350} },
-            { url: 'http://192.168.0.148:4200/#/images/heat', dimension: { width: 1200, height: 675} },
-            { url: 'http://192.168.0.148:4200/#/images/words', dimension: { width: 1080, height: 1350} }
+            { url: 'http://192.168.0.148:4200/#/images/xxx/basics', options: { ...landscape, convertCanvas2Image: true, headless: true} },
+            { url: 'http://192.168.0.148:4200/#/images/xxx/weekly', options: { ...landscape, convertCanvas2Image: true, headless: true}},
+            { url: 'http://192.168.0.148:4200/#/images/xxx/interests', options: { ...landscape, convertCanvas2Image: true, headless: true} },
+            { url: 'http://192.168.0.148:4200/#/images/xxx/hashtags', options: { ...landscape, convertCanvas2Image: true, headless: true} }
 
-        ].map(u => urlUrlToBuffer(u.url, u.dimension))
+        ].map(u => urlUrlToBuffer(u.url, u.options, 5000))
     );
 
-    // imageBuffers.forEach(async (b) => await save(`./tmp/img-${ Date.now() }.png`, b));
+
+    //  await Promise.all(imageBuffers.map(b =>
+    //          save(`./tmp/img-${ Date.now()}-${rnd(0, 100000)}.png`, b)));
 
 
-
-    twitter.reply('who is "undressor"? \r\n\r\nmore 👉 https://undressor-ui.herokuapp.com/ \r\n', '1542084253634134016', imageBuffers);
-
-
-    // const buffer = await urlUrlToBuffer('http://192.168.0.148:4200/#/images', { width: 1080, height: 1350});
-    // fs.writeFileSync('./test.png', buffer);
+    await twitter.reply('who is @undressor? \r\n\r\nmore insights » https://undressor-ui.herokuapp.com/ \r\n', '1542084253634134016', imageBuffers);
 }
 
 

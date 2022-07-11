@@ -12,11 +12,28 @@ export class ApiService {
   
   constructor(private http: HttpClient) { }
 
-  getData(name: string) {
-    return this.http.get<Profile>(`${environment.apiUrl}profile/${name}`);
+  getData(userId: string) {
+    return this.http.get<Profile>(`${environment.apiUrl}profile/${userId}`);
   }
 
   getInsights(userid: string) {
     return this.http.get<Insights>(`${environment.apiUrl}insights/${userid}`);
   }
+
+
+  getInterests(userId: string) {
+    return this.http.get<Profile>(`${environment.apiUrl}profile/${userId}/interests`);
+  }  
+
+  getHashtags(userId: string) {
+    return this.http.get<Profile>(`${environment.apiUrl}profile/${userId}/hashtags`);
+  }    
+
+  getWeeklyUsage(userId: string) {
+    return this.http.get<Profile>(`${environment.apiUrl}profile/${userId}/weekly`);
+  }
+
+  getProfileBasics(userId: string) {
+    return this.http.get<any>(`${environment.apiUrl}profile/${userId}/basics`);
+  }        
 }

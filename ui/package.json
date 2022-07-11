@@ -28,6 +28,7 @@
     "chart.js": "^3.8.0",
     "chartjs-chart-matrix": "^1.1.1",
     "chartjs-chart-wordcloud": "^3.8.0",
+    "chartjs-plugin-datalabels": "^2.0.0",
     "ng2-charts": "^3.1.0",
     "ngx-device-detector": "^4.0.0",
     "rxjs": "~7.5.0",

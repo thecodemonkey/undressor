@@ -6,5 +6,10 @@
 </canvas>
 
 <div class="labels" #lbl>
-    <span *ngFor="let l of lbls">{{l}}</span>
+    <span *ngFor="let l of lbls">
+        <span class="lbl">{{l.lbl}}</span>
+        <span class="val">{{l.val == 0? '' : l.val}}</span>
+    </span>
 </div>
+
+<h2>{{title}}</h2>

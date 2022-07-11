@@ -7,13 +7,18 @@ import { initClient, initOAuth1Client, initROClient } from './twitter.config'
 async function getProfile(twittername: string) {
     const tclient = initROClient();
 
-    const user = await tclient.v2.userByUsername(twittername);
+    const user = await tclient.v2.userByUsername(twittername, { "user.fields" : ['public_metrics','protected','profile_image_url']});
 
 
     console.log('### read user info: ###\n\n');
     console.log('user', user);
 
-    return { status: 'ok', profile: user };
+    return {
+        profile_image_url: user.data.profile_image_url,
+        followers_count: user.data.public_metrics.followers_count,
+        following_count: user.data.public_metrics.following_count,
+        listed_count: user.data.public_metrics.listed_count,
+    };
 }
 
 

@@ -5,13 +5,25 @@
     top: 0;
     bottom: 0;
 
+    h2 {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        color: #84BCB9;
+        top: 50%;
+        font-size: 2rem;
+        margin: -2rem 0 0 0;
+        padding: 0;
+
+    }
+
     .labels{
         position: absolute;
         text-align: right;
         color: #84BCB9;
         z-index: 1;
         bottom: 50%;
-        right: 50%;
+        right: 53%;
         display: flex;
         flex-direction: column;
         align-content: center;
@@ -22,8 +34,19 @@
         span {           
             font-size: 25px;
             line-height: 30px;
-            padding-bottom: 5px;
+            padding-bottom: 0;
             vertical-align: middle;
+
+            .lbl{
+                display: inline-block;
+                padding-right: 10px;
+            }
+
+            .val {
+                display: inline-block;
+                min-width: 50px;
+                color: #bafffc;
+            }
         }
     }
 }

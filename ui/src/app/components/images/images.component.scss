@@ -22,6 +22,24 @@
         top: 20%;
         bottom: 20%;
         overflow: hidden;
+
+        .h-multi{
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+
+            display: flex;
+            flex-direction: row;
+            gap: 10%;
+
+            
+            :nth-child(1n) {
+                position: relative;
+                flex: 1;
+            }
+        }
     }
 
     .chart-area-tmp {

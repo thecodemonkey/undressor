@@ -48,7 +48,7 @@ export class HeatmapComponent extends ChartBaseComponent {
             return daysOfWeek[index];
           },
           font: {
-            size: 32,
+            size: 24,
             family: 'Jura',
             weight: '300'            
           },
@@ -93,13 +93,13 @@ export class HeatmapComponent extends ChartBaseComponent {
 
 
   override init(chrt:any) { 
-    const pntlbs = chrt?.options.scales.x.ticks;
-    if (pntlbs) {
-      pntlbs.font = {
-        family: 'Jura',
-        size: 24
-      }
-    }    
+    // const pntlbs = chrt?.options.scales.x.ticks;
+    // if (pntlbs) {
+    //   pntlbs.font = {
+    //     family: 'Jura',
+    //     size: 24
+    //   }
+    // }    
   }
 
   generateMatrix() {

@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'about', component: AboutComponent },
   { path: 'images/:id', component: ImagesComponent },
-  { path: 'images', component: ImagesComponent },
+  { path: 'images/:userid/:id', component: ImagesComponent },
   { path: '',   component: HomeComponent, pathMatch: 'full' },
   { path: '**',   component: NotfoundComponent } 
 ];
