@@ -28,7 +28,7 @@ export class ApiService {
   }  
 
   getHashtags(userId: string) {
-    return this.http.get<Profile>(`${environment.apiUrl}profile/${userId}/hashtags`);
+    return this.http.get<DataValue[]>(`${environment.apiUrl}profile/${userId}/hashtags`);
   }    
 
   getWeeklyUsage(userId: string) {

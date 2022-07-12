@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 import puppeteer from 'puppeteer';
 import fs from 'fs';
+import { title } from "process";
 
 function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -68,7 +69,13 @@ function rnd(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function normalizeHashtags(tags:string[]){
+    if (!tags || tags.length < 1) return [];
+
+    const counts:any = {};
+    tags.forEach( (x) => { counts[x] = ( counts[x] || 0) + 1; });
+    return Object.keys(counts).map(k => ({ title: k, value: counts[k] }));
+}
 
 
-
-export { imageUrlToBuffer, urlUrlToBuffer, sleep, save, rnd }
+export { imageUrlToBuffer, urlUrlToBuffer, sleep, save, rnd, normalizeHashtags }

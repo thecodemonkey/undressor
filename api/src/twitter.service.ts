@@ -2,11 +2,10 @@ import { Console } from 'console';
 import moment from 'moment';
 import { SendTweetV2Params, TwitterApi, TwitterApiReadOnly } from 'twitter-api-v2';
 import { initClient, initOAuth1Client, initROClient } from './twitter.config'
+import { normalizeHashtags } from './utils';
 
 async function getMentionsCounts24h(tclient: TwitterApiReadOnly, username:string) {
     const start = moment().startOf('day').subtract(1, 'day');
-
-
 
     return await tclient.v2.tweetCountRecent(`@${username} -to:${username}`, {
         start_time:  start.toISOString(), end_time: start.endOf('day').toISOString(),
@@ -49,6 +48,19 @@ async function getProfile(twittername: string) {
         reply_count: repliesCnt.meta.total_tweet_count,
         mention_count: mentions.meta.total_tweet_count
     };
+}
+
+async function getHashtags(userid:string) {
+    const tclient = initROClient();
+    const hastags = await tclient.v2.search(`from:${userid} has:hashtags`, { max_results: 100, "tweet.fields": ['entities'] });
+
+
+    const ht = hastags.data?.data?.filter(d => d.entities?.hashtags?.length  > 0)
+                                .flatMap(d => d.entities.hashtags.map(h => h.tag));
+
+    // console.log('hastags:', normalizeHashtags(ht));
+
+    return normalizeHashtags(ht);
 }
 
 
@@ -107,4 +119,4 @@ async function getNewMentions(lastMentionId: string) {
     }
 }
 
-export { reply, send, getProfile, getNewMentions }
+export { reply, send, getProfile, getNewMentions, getHashtags }

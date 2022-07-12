@@ -124,7 +124,7 @@ export class ImagesComponent implements OnInit {
         //this.data$ = this.api.getInterests(this.userId);
         break;
       case 'hashtags':
-        //this.data$ = this.api.getHashtags(this.userId);
+        this.data$ = this.api.getHashtags(this.userId);
         break;
       case 'weekly':
         //this.data$ = this.api.getWeeklyUsage(this.userId);
@@ -149,16 +149,8 @@ export class ImagesComponent implements OnInit {
             { title: 'replies', value: d.reply_count}, 
             { title: 'mentions', value: d.mention_count}            
           ])
-        )
-        
+        )       
 
-        // this.data2$ = this.api.getProfileBasics(this.userId)               
-        //           .pipe(catchError(val => of(`### I caught: ${val}`)))
-        //           .pipe(map((d:any) => [
-        //                   { title: 'tweets', value: d.followers_count}, 
-        //                   { title: 'replies', value: d.following_count}, 
-        //                   { title: 'likes', value: 34}
-        //             ]));
         break;
 
       case 'radar':

@@ -9,7 +9,7 @@
         <app-ring *ngIf="data2$ | async as da" [datavalues]="da" [title]="tweetsTitle"></app-ring>
     </div>    
     <app-polar [datavalues]="dsInterests" *ngIf="id == 'interests'"></app-polar>
-    <app-tagcloud [datavalues]="dsWords" *ngIf="id == 'hashtags'"></app-tagcloud>
+    <app-tagcloud *ngIf="id == 'hashtags' && (data$ | async) as da" [datavalues]="da"></app-tagcloud>
     <app-heatmap *ngIf="id == 'weekly'"></app-heatmap>
 
     <app-radar [datavalues]="dsInterests" *ngIf="id == 'radar'"></app-radar>

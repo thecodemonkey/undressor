@@ -40,8 +40,12 @@ export class TagcloudComponent extends ChartBaseComponent {
 
   override init(chrt:any) {
     this.data.labels = this.datavalues.map(d => d.title);
+    //const m = this.datavalues.map(d => d.value).sort((a,b) => b-a )[0];
+
+
     this.data.datasets[0].data = this.datavalues.map(d => {
-      return  2 + d.value * 7
+      
+      return  2 + d.value * 10
     });
 
     
