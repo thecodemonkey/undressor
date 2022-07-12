@@ -3,25 +3,6 @@ import { imageUrlToBuffer, rnd, save, urlUrlToBuffer,  } from './utils'
 import fs from 'fs';
 
 async function start() {
-
-    // twitter.reply()
-    // twitter.send('test 2...');
-
-    // { width: 1200, height: 675} }
-
-
-    // const urls = [
-    //     { url: 'http://192.168.0.148:4200/#/images/bar', dimension: { width: 1080, height: 1350} },
-    //     { url: 'http://192.168.0.148:4200/#/images/words', dimension: { width: 1080, height: 1350} },
-    //     { url: 'http://192.168.0.148:4200/#/images/line', dimension: { width: 1080, height: 1350} }
-    // ];
-
-
-    // for (const u of urls ) {
-    //     const b = await urlUrlToBuffer(u.url, u.dimension, 5000);
-    //     await save(`./tmp/img-${ Date.now() }.png`, b)
-    // }
-
     const landscape =  { width: 1200, height: 675 }
     const portrait =  { width: 1080, height: 1350 }
     const username = 'BBattmer';
