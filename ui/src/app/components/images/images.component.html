@@ -5,8 +5,8 @@
 
 <div class="chart-area">
     <div class="h-multi" *ngIf="id == 'basics'">
-        <app-ring [datavalues]="(data$ | async)"></app-ring>
-        <app-ring [datavalues]="dsLanguages" title="tweets"></app-ring>
+        <app-ring *ngIf="data$ | async as da" [datavalues]="da" title="follower"></app-ring>
+        <app-ring *ngIf="data2$ | async as da" [datavalues]="da" [title]="tweetsTitle"></app-ring>
     </div>    
     <app-polar [datavalues]="dsInterests" *ngIf="id == 'interests'"></app-polar>
     <app-tagcloud [datavalues]="dsWords" *ngIf="id == 'hashtags'"></app-tagcloud>
@@ -16,5 +16,3 @@
     <app-linearea [datavalues]="dsInterests" *ngIf="id == 'line'"></app-linearea>
     <app-bar [datavalues]="dsInterests" *ngIf="id == 'bar'"></app-bar>
 </div>
-
-{{(data$ | async) | json}}

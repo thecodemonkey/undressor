@@ -1,4 +1,4 @@
-import * as twitter from './twitter.proxy';
+import * as twitter from './twitter.service';
 import { imageUrlToBuffer, rnd, save, urlUrlToBuffer,  } from './utils'
 import fs from 'fs';
 
@@ -24,14 +24,15 @@ async function start() {
 
     const landscape =  { width: 1200, height: 675 }
     const portrait =  { width: 1080, height: 1350 }
+    const username = 'BBattmer';
 
 
     const imageBuffers = await Promise.all(
         [
-            { url: 'http://192.168.0.148:4200/#/images/xxx/basics', options: { ...landscape, convertCanvas2Image: true, headless: true} },
-            { url: 'http://192.168.0.148:4200/#/images/xxx/weekly', options: { ...landscape, convertCanvas2Image: true, headless: true}},
-            { url: 'http://192.168.0.148:4200/#/images/xxx/interests', options: { ...landscape, convertCanvas2Image: true, headless: true} },
-            { url: 'http://192.168.0.148:4200/#/images/xxx/hashtags', options: { ...landscape, convertCanvas2Image: true, headless: true} }
+            { url: `http://192.168.0.148:4200/#/images/${username}/basics`, options: { ...landscape, convertCanvas2Image: true, headless: true} },
+            { url: `http://192.168.0.148:4200/#/images/${username}/weekly`, options: { ...landscape, convertCanvas2Image: true, headless: true}},
+            { url: `http://192.168.0.148:4200/#/images/${username}/interests`, options: { ...landscape, convertCanvas2Image: true, headless: true} },
+            { url: `http://192.168.0.148:4200/#/images/${username}/hashtags`, options: { ...landscape, convertCanvas2Image: true, headless: true} }
 
         ].map(u => urlUrlToBuffer(u.url, u.options, 5000))
     );

@@ -1,6 +1,6 @@
 import { CronJob } from 'cron';
 import * as db from './db';
-import * as tclient from './twitter.proxy';
+import * as tclient from './twitter.service';
 import { imageUrlToBuffer } from './utils'
 
 

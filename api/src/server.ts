@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import * as twitter from './twitter.proxy'
+import * as twitter from './twitter.service'
 
 const app = express();
 const port = process.env.PORT;

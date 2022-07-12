@@ -5,6 +5,7 @@ import { chartBgColor } from 'src/app/model/charts.options';
 import { DataValue } from 'src/app/model/dataset';
 import { ChartBaseComponent } from '../chart.base.component';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { State } from 'src/app/state';
 
 @Component({
   selector: 'app-ring',
@@ -12,7 +13,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
   styleUrls: ['./ring.component.scss']
 })
 export class RingComponent extends ChartBaseComponent {
-  @Input() datavalues: DataValue[] | null = null;
+  @Input() datavalues!: DataValue[];
   @Input() title: string = '';
  
   @ViewChild("lbl") elLabels!: ElementRef;
@@ -34,8 +35,13 @@ export class RingComponent extends ChartBaseComponent {
     }      
   }
 
-  constructor() { 
+  constructor(private state: State) { 
     super(); 
+
+    // this.state.imgData.val$.subscribe(d => {
+    //   console.log('IMAGEDATA!!!', d);
+    // });
+
     //Chart.register(ChartDataLabels);
 
     this.showLegend = false;
@@ -62,47 +68,43 @@ export class RingComponent extends ChartBaseComponent {
 
     console.log('init data: ', this.datavalues);
 
-    if(this.datavalues) {
 
-      const values = this.datavalues.sort((a,b) => (b.value - a.value));
-      const max = values[0].value;
-      const offset = (100 / max * 20); 
-
-
-      this.data.labels = this.datavalues.map(d => d.title);
-      this.data.datasets = values.map((v, i:number) => {
-        let vl:number = v.value;
-        const r = 100 / max * v.value;
-        
-        const ra =  Math.floor(Math.floor(100 / 75) * r);
-
-        vl = ra - (ra/100 * 25)
-
-        // console.log(` ${v.title} - r: ${r} - ra: ${ra} - vl: ${vl} - raa% ${((100 / ra) * 25)}`);
+    const values = this.datavalues.sort((a,b) => (b.value - a.value));
+    const max = values[0].value;
+    const offset = (100 / max * 20); 
 
 
-        if (vl < 0) vl = 0;
+    this.data.labels = this.datavalues.map(d => d.title);
+    this.data.datasets = values.map((v, i:number) => {
+      let vl:number = v.value;
+      const r = 100 / max * v.value;
+      
+      const ra =  Math.floor(Math.floor(100 / 75) * r);
 
-        return {
-            data: [vl, 100 - vl],
-            backgroundColor:[this.bgColors[i], '#84BCB900'],
-        }}
-      );
+      vl = ra - (ra/100 * 25)
+
+      // console.log(` ${v.title} - r: ${r} - ra: ${ra} - vl: ${vl} - raa% ${((100 / ra) * 25)}`);
 
 
-      const lg = chrt?.options.plugins?.legend;
-      if (lg) {
-        lg.position = 'top';
-        lg.labels = this.config.legend.labels;
-      }
+      if (vl < 0) vl = 0;
 
-      timer(100).subscribe(() => {
-        if (this.datavalues){
-          this.lbls = this.datavalues.map(d => ({lbl: d.title || '', val: d.value}));
-          this.adjustLabels(chrt);
-        }
-      });
+      return {
+          data: [vl, 100 - vl],
+          backgroundColor:[this.bgColors[i], '#84BCB900'],
+      }}
+    );
+
+
+    const lg = chrt?.options.plugins?.legend;
+    if (lg) {
+      lg.position = 'top';
+      lg.labels = this.config.legend.labels;
     }
+
+    timer(100).subscribe(() => {     
+      this.lbls = this.datavalues.map(d => ({lbl: d.title || '', val: d.value}));
+      this.adjustLabels(chrt);
+    });    
     
   }  
 }

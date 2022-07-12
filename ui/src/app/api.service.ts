@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map, pipe } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { DataValue } from './model/dataset';
 import { Insights } from './model/insights';
 import { Profile } from './model/profile';
 
@@ -34,6 +36,6 @@ export class ApiService {
   }
 
   getProfileBasics(userId: string) {
-    return this.http.get<any>(`${environment.apiUrl}profile/${userId}/basics`);
-  }        
+    return this.http.get<DataValue[]>(`${environment.apiUrl}profile/${userId}/basics`);
+  }
 }

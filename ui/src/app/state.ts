@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
+import { DataValue } from './model/dataset';
 
 export class StateProperty<T> {
 
@@ -25,6 +26,8 @@ export class StateProperty<T> {
 export class State {
   navbarOn = new StateProperty<boolean>(false);
   activePage = new StateProperty<string>('');
+
+  imgData = new StateProperty<DataValue[] | null>(null);
 
   public toggleNavbar() {
     this.navbarOn.val = !this.navbarOn.val;
