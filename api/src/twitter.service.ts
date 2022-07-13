@@ -1,8 +1,9 @@
 import { Console } from 'console';
 import moment from 'moment';
 import { SendTweetV2Params, TwitterApi, TwitterApiReadOnly } from 'twitter-api-v2';
+import { weeklyUsage } from './data/weekly.cnt';
 import { initClient, initOAuth1Client, initROClient } from './twitter.config'
-import { normalizeHashtags } from './utils';
+import { normalizeHashtags, printJSON, rnd } from './utils';
 
 async function getMentionsCounts24h(tclient: TwitterApiReadOnly, username:string) {
     const start = moment().startOf('day').subtract(1, 'day');
@@ -22,6 +23,57 @@ async function getTweetCounts24h(tclient: TwitterApiReadOnly, userid:string, rep
         start_time:  start.toISOString(), end_time: start.endOf('day').toISOString(),
         granularity: 'day'
     });
+}
+
+async function getWeeklyCounts(userid: string) {
+    const tclient = initROClient();
+    const generateMatrix = () => {
+        const matrix:{x:number, y:number, r: number}[] = [];
+
+        for(let x = 0; x < 24; x++) {
+          for(let y = 1; y <= 7; y++) {
+            matrix.push({ x, y, r: 0});
+          }
+        }
+
+        return matrix;
+    }
+
+    const start = moment().subtract(1, 'week').add(10, 'minutes').utcOffset(7200).toISOString();
+    const end = ''; // moment().subtract(1, 'minute').toISOString();
+
+    console.log(`start: ${start} | end: ${end}`);
+
+
+    // const c2 = await initOAuth1Client();
+    // c2.v1.updateAccountSettings( { time_zone: 'Europe/Berlin' });
+    // const settings = await c2.v1.accountSettings();
+    // const user = await tclient.v2.userByUsername(userid, {
+    //                                 "user.fields" : ['public_metrics','protected','profile_image_url', 'location']});
+    // printJSON('USER', user);
+
+
+    const counts = await tclient.v2.tweetCountRecent(`from:${userid}`, {
+        // start_time:  start,
+        // end_time: end,
+        granularity: 'hour'
+    });
+
+    // const dat = weeklyUsage();
+    const result = generateMatrix();
+
+    counts.data.forEach((cnt) => {
+        const m = moment(cnt.start);
+        // console.log(`day: ${cnt.start} | hour: ${m.hour()} `);
+
+        const item = result.find(i => i.x === m.hour() && i.y === m.day()+1);
+        if (item)
+          item.r = cnt.tweet_count;
+    });
+
+
+
+    return result;
 }
 
 async function getProfile(twittername: string) {
@@ -50,19 +102,30 @@ async function getProfile(twittername: string) {
     };
 }
 
+async function getInterests(twittername: string) {
+    const tclient = initROClient();
+
+    const user = await tclient.v2.userByUsername(twittername);
+
+    const result = tclient.v2.userLikedTweets(user.data.id, { "tweet.fields": ['context_annotations', 'entities', 'public_metrics'] })
+    printJSON('INTERESTS', result);
+
+    return result;
+}
+
 async function getHashtags(userid:string) {
     const tclient = initROClient();
-    const hastags = await tclient.v2.search(`from:${userid} has:hashtags`, { max_results: 100, "tweet.fields": ['entities'] });
+    const hastags = await tclient.v2.search(`(from:${userid} OR retweets_of:${userid}) has:hashtags`, { max_results: 100, "tweet.fields": ['entities'] });
 
 
     const ht = hastags.data?.data?.filter(d => d.entities?.hashtags?.length  > 0)
                                 .flatMap(d => d.entities.hashtags.map(h => h.tag));
 
-    // console.log('hastags:', normalizeHashtags(ht));
+    console.log('hastags:', normalizeHashtags(ht));
+    printJSON('HASHTAGS', hastags)
 
     return normalizeHashtags(ht);
 }
-
 
 async function reply(text: string, tweetid: string, images?:Buffer[]) {
     const tclient = initOAuth1Client();
@@ -119,4 +182,4 @@ async function getNewMentions(lastMentionId: string) {
     }
 }
 
-export { reply, send, getProfile, getNewMentions, getHashtags }
+export { reply, send, getProfile, getNewMentions, getHashtags, getWeeklyCounts, getInterests }

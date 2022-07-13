@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Chart, ChartConfiguration, DateAdapter, _adapters } from 'chart.js';
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
-import { DataValue } from 'src/app/model/dataset';
+import { DataMatrixCell, DataValue } from 'src/app/model/dataset';
 import { ChartBaseComponent } from '../chart.base.component';
 import * as helpers from 'chart.js/helpers';
 import { rnd } from 'src/app/utils';
@@ -15,7 +15,7 @@ const daysOfWeek = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su' ];
   styleUrls: ['./heatmap.component.scss']
 })
 export class HeatmapComponent extends ChartBaseComponent {
-  @Input() datavalues!: DataValue[];
+  @Input() datavalues!: DataMatrixCell[];
 
   _options:ChartConfiguration['options'] = {
     responsive: true,
@@ -71,11 +71,12 @@ export class HeatmapComponent extends ChartBaseComponent {
     labels: [''],
     datasets: [{
       label: '',
-      data: this.generateMatrix(),
+      data: [{x:0,y:0,r:0}],
       backgroundColor(context:any) {
         const maxR = context.dataset.data.map((d:any) => d.r).sort((a:number,b:number)=>b-a)[0];
         const value = context.dataset.data[context.dataIndex].r;
-        const alpha = (value - 5) / maxR;
+        const alpha = Math.floor(100 / maxR * value)/100;
+
         return helpers.color(chartLabelColor).alpha(alpha).rgbString();
       },
       borderColor:'transparent',
@@ -91,27 +92,8 @@ export class HeatmapComponent extends ChartBaseComponent {
     this.showLegend = false;
   }
 
-
-  override init(chrt:any) { 
-    // const pntlbs = chrt?.options.scales.x.ticks;
-    // if (pntlbs) {
-    //   pntlbs.font = {
-    //     family: 'Jura',
-    //     size: 24
-    //   }
-    // }    
-  }
-
-  generateMatrix() {
-    const matrix:{x:number, y:number, r: number}[] = [];
-
-    for(let x = 0; x < 24; x++) {
-      for(let y = 1; y <= 7; y++) {
-        matrix.push({ x: x, y: y, r: rnd(1, 150)});
-      }
-    }
-
-    return matrix;
+  override init(chrt: any) {
+    this.data.datasets[0].data = this.datavalues;
   }
 
 }

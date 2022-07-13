@@ -77,5 +77,8 @@ function normalizeHashtags(tags:string[]){
     return Object.keys(counts).map(k => ({ title: k, value: counts[k] }));
 }
 
+function printJSON(text:string, obj: any){
+    console.log(`JSON VALUE of ${text}: \n\n ${JSON.stringify(obj, null, 4)} \n`);
+}
 
-export { imageUrlToBuffer, urlUrlToBuffer, sleep, save, rnd, normalizeHashtags }
+export { imageUrlToBuffer, urlUrlToBuffer, sleep, save, rnd, normalizeHashtags, printJSON }

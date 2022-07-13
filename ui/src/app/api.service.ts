@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, pipe } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { DataValue } from './model/dataset';
+import { DataMatrixCell, DataValue } from './model/dataset';
 import { Insights } from './model/insights';
 import { Profile } from './model/profile';
 
@@ -32,7 +32,7 @@ export class ApiService {
   }    
 
   getWeeklyUsage(userId: string) {
-    return this.http.get<Profile>(`${environment.apiUrl}profile/${userId}/weekly`);
+    return this.http.get<DataMatrixCell[]>(`${environment.apiUrl}profile/${userId}/weekly`);
   }
 
   getProfileBasics(userId: string) {

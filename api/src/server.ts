@@ -23,8 +23,7 @@ app.get('/profile/:userid/basics', async (req, res) => {
 });
 
 app.get('/profile/:userid/interests', async (req, res) => {
-  const profile = await twitter.getProfile(req.params.userid);
-
+  const profile = await twitter.getInterests(req.params.userid);
   res.json( profile);
 });
 
@@ -35,16 +34,20 @@ app.get('/profile/:userid/hashtags', async (req, res) => {
   if (!hashtags) {
     hashtags = await twitter.getHashtags(req.params.userid);
     cache.set(`hashtags-${req.params.userid}`, hashtags);
-    console.log('update cache...');
   }
 
   res.json( hashtags);
 });
 
 app.get('/profile/:userid/weekly', async (req, res) => {
-  const profile = await twitter.getProfile(req.params.userid);
+  let counts = cache.get(`counts-${req.params.userid}`);
 
-  res.json( profile);
+  if (!counts) {
+    counts = await twitter.getWeeklyCounts(req.params.userid);
+    cache.set(`counts-${req.params.userid}`, counts);
+  }
+
+  res.json( counts );
 });
 
 

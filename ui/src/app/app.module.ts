@@ -26,6 +26,7 @@ import { LineareaComponent } from './components/shared/charts/linearea/linearea.
 import { BarComponent } from './components/shared/charts/bar/bar.component';
 import { TagcloudComponent } from './components/shared/charts/tagcloud/tagcloud.component';
 import { HeatmapComponent } from './components/shared/charts/heatmap/heatmap.component';
+import { HumanizePipe } from './humanize.pipe';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { HeatmapComponent } from './components/shared/charts/heatmap/heatmap.com
     LineareaComponent,
     BarComponent,
     TagcloudComponent,
-    HeatmapComponent
+    HeatmapComponent,
+    HumanizePipe
   ],
   imports: [
     BrowserModule,

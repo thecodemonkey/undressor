@@ -26,7 +26,7 @@ export class TagcloudComponent extends ChartBaseComponent {
     datasets: [ {
       label: 'ds',
       data: [12, 20, 30],
-      overflow: true,
+      overflow: false,
       fit: true
     }]    
   };
@@ -40,11 +40,11 @@ export class TagcloudComponent extends ChartBaseComponent {
 
   override init(chrt:any) {
     this.data.labels = this.datavalues.map(d => d.title);
-    //const m = this.datavalues.map(d => d.value).sort((a,b) => b-a )[0];
+    const m = this.datavalues.map(d => d.value).sort((a,b) => b-a )[0];
 
 
-    this.data.datasets[0].data = this.datavalues.map(d => {
-      
+    this.data.datasets[0].data = this.datavalues.map(d => {     
+      //const r = Math.floor((100 / m * d.value));
       return  2 + d.value * 10
     });
 
@@ -55,14 +55,14 @@ export class TagcloudComponent extends ChartBaseComponent {
     const ds = (this.data.datasets[0] as any);
     ds.color = (ctx:any) => {
       const r = Math.floor((100 / max * ctx.raw));
-      let clr = '#84BCB911';
+      let clr = '#84BCB933';
 
       if (r > 20 && r < 40) {
-        clr = '#84BCB933'
+        clr = '#84BCB955'
       } else if (r > 39 && r < 60) {
-        clr = '#84BCB966'
+        clr = '#84BCB988'
       } else if (r > 59 && r < 80) {
-        clr = '#84BCB9aa'
+        clr = '#84BCB9cc'
       } else if (r > 79 ) {
         clr = '#84BCB9'
       }

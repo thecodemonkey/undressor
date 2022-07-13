@@ -8,3 +8,8 @@ export interface DataRow {
     values: number[]
 }
 
+export interface DataMatrixCell{
+    x:number, 
+    y:number, 
+    r: number
+}

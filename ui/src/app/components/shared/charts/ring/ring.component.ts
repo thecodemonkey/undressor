@@ -59,14 +59,9 @@ export class RingComponent extends ChartBaseComponent {
   }
 
 
-  override ngOnInit() {
-    console.log('oninit data: ', this.datavalues);  
-  }
-
-
   override init(chrt: any) {
 
-    console.log('init data: ', this.datavalues);
+    //console.log('init data: ', this.datavalues);
 
 
     const values = this.datavalues.sort((a,b) => (b.value - a.value));
@@ -102,7 +97,7 @@ export class RingComponent extends ChartBaseComponent {
     }
 
     timer(100).subscribe(() => {     
-      this.lbls = this.datavalues.map(d => ({lbl: d.title || '', val: d.value}));
+      this.lbls = this.datavalues.map(d => ({lbl: d.title || '', val:  d.value }));
       this.adjustLabels(chrt);
     });    
     

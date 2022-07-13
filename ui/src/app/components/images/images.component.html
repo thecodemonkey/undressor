@@ -10,7 +10,7 @@
     </div>    
     <app-polar [datavalues]="dsInterests" *ngIf="id == 'interests'"></app-polar>
     <app-tagcloud *ngIf="id == 'hashtags' && (data$ | async) as da" [datavalues]="da"></app-tagcloud>
-    <app-heatmap *ngIf="id == 'weekly'"></app-heatmap>
+    <app-heatmap *ngIf="id == 'weekly' && (dataWeekly$ | async) as da" [datavalues]="da"></app-heatmap>
 
     <app-radar [datavalues]="dsInterests" *ngIf="id == 'radar'"></app-radar>
     <app-linearea [datavalues]="dsInterests" *ngIf="id == 'line'"></app-linearea>
