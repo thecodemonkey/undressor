@@ -42,12 +42,10 @@ export class TagcloudComponent extends ChartBaseComponent {
     this.data.labels = this.datavalues.map(d => d.title);
     const m = this.datavalues.map(d => d.value).sort((a,b) => b-a )[0];
 
-
     this.data.datasets[0].data = this.datavalues.map(d => {     
-      //const r = Math.floor((100 / m * d.value));
-      return  2 + d.value * 10
+      const r = Math.floor((100 / m * d.value));
+      return  2 + Math.floor(r);
     });
-
     
     const max = (this.data.datasets[0].data as number[]).map(d => d).sort((a,b) => b-a)[0];
     console.log('max is: ', max);
