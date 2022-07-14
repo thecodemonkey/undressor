@@ -14,6 +14,7 @@ import * as humanize from 'humanize-plus';
 export class ImagesComponent implements OnInit {
   id: string = '';
   userId: string = '';
+  title: string = '';
 
 
   dataActivity$: Observable<any[]> = of([]);
@@ -52,9 +53,11 @@ export class ImagesComponent implements OnInit {
         break;
       case 'hashtags':
         this.data$ = this.api.getHashtags(this.userId);
+        this.title = `what topics is <strong>@${this.userId}</strong> interested in?`;
         break;
       case 'weekly':
         this.dataWeekly$ = this.api.getWeeklyUsage(this.userId);
+        this.title = `when exactly and how often does <strong>@${this.userId}</strong> tweet?`;
         break;
       case 'basics':
         
@@ -78,10 +81,12 @@ export class ImagesComponent implements OnInit {
           ])
         )       
 
+        this.title = `how popular is <strong>@${this.userId}</strong>? How many tweets has he posted in the last 24 hours?`;
         break;
 
       case 'activity':
         this.dataActivity$ = this.api.getActivity(this.userId);
+        this.title = `how do the tweets from <strong>@${this.userId}</strong> look like? `;
         break;
       case 'radar':
         break;

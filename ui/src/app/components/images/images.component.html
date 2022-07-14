@@ -17,4 +17,4 @@
     <app-bar *ngIf="id == 'activity' && (dataActivity$ | async) as da" [datavalues]="da" ></app-bar>
 </div>
 
-<div class="title">how many tweets and likes has undressor generated in past 7 days?</div>
+<div class="title" [innerHtml]="title"></div>

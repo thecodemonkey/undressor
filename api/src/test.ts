@@ -23,7 +23,7 @@ async function start() {
     //           save(`./tmp/img-${ Date.now()}-${rnd(0, 100000)}.png`, b)));
 
 
-    await twitter.reply('who is @undressor? \r\n\r\nmore insights » https://undressor-ui.herokuapp.com/ \r\n', '1542084253634134016', imageBuffers);
+    await twitter.reply('who is @undressor? \r\n\r\nmore insights » https://undressor-ui.herokuapp.com/#/insights/undressor \r\n', '1542084253634134016', imageBuffers);
 }
 
 
