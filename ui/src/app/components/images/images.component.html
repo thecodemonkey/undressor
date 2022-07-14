@@ -14,5 +14,7 @@
 
     <app-radar [datavalues]="dsInterests" *ngIf="id == 'radar'"></app-radar>
     <app-linearea [datavalues]="dsInterests" *ngIf="id == 'line'"></app-linearea>
-    <app-bar [datavalues]="dsInterests" *ngIf="id == 'bar'"></app-bar>
+    <app-bar *ngIf="id == 'activity' && (dataActivity$ | async) as da" [datavalues]="da" ></app-bar>
 </div>
+
+<div class="title">how many tweets and likes has undressor generated in past 7 days?</div>

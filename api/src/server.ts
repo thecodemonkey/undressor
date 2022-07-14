@@ -9,6 +9,19 @@ const port = process.env.PORT;
 
 app.use(cors());
 
+
+const cached = async (key:string, clbk: () => any) => {
+  let item = cache.get(key);
+
+  if (!item) {
+    item = await clbk();
+    cache.set(key, item);
+  }
+
+  return item;
+}
+
+
 app.get('/profile/:userid/basics', async (req, res) => {
 
   let profile = cache.get(`basic-${req.params.userid}`);
@@ -51,6 +64,15 @@ app.get('/profile/:userid/weekly', async (req, res) => {
 });
 
 
+app.get('/:userid/activity', async (req, res) => {
+
+  res.json(
+    await cached(`activity-${req.params.userid}`,
+      async () => {
+        return await twitter.getActivity(req.params.userid);
+    })
+  );
+});
 
 
 app.get('/profile/:twittername', async (req, res) => {

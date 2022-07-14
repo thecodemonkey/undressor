@@ -17,8 +17,7 @@ export class TagcloudComponent extends ChartBaseComponent {
   _options:ChartConfiguration['options'] = {
     responsive: true,
     animation: false,
-    maintainAspectRatio: false
-
+    maintainAspectRatio: false,
   };
 
   data: ChartConfiguration['data'] = {
@@ -26,9 +25,11 @@ export class TagcloudComponent extends ChartBaseComponent {
     datasets: [ {
       label: 'ds',
       data: [12, 20, 30],
-      overflow: false,
-      fit: true
-    }]    
+      overflow: true,
+      fit: true,
+      family: 'Jura',
+      weight: 300
+    }]
   };
 
   constructor() { 
@@ -39,6 +40,10 @@ export class TagcloudComponent extends ChartBaseComponent {
   }
 
   override init(chrt:any) {
+    console.log('HASHTAGS CNT: ', this.datavalues.length);
+
+    //(this.data.datasets[0] as any).fit = (this.datavalues.length < 65);
+
     this.data.labels = this.datavalues.map(d => d.title);
     const m = this.datavalues.map(d => d.value).sort((a,b) => b-a )[0];
 
@@ -65,7 +70,7 @@ export class TagcloudComponent extends ChartBaseComponent {
         clr = '#84BCB9'
       }
 
-      console.log(`r: ${r} | max: ${max}`);
+      // console.log(`r: ${r} | max: ${max}`);
 
       return clr;
     };

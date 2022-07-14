@@ -1,6 +1,7 @@
 import { ChartOptions, LayoutPosition } from 'chart.js';
 
 export const chartFontSize = 36;
+export const chartSecondColor = '#84BCB9aa';
 export const chartLightColor = '#84BCB9';
 export const chartBgColor = '#171D1E';
 export const chartGridColor = '#84BCB944';
@@ -24,11 +25,13 @@ export const radialConfig = () => ({
         color: chartLightColor, 
         backdropColor: chartBgColor, 
         backdropPadding: 15,
-        display: false
+        display: false        
     },
     pointLabels: {
         font: {
           size: chartFontSize,
+          family: 'Jura',
+          weight: '300'
         },
         color: chartLabelColor
    }            
@@ -37,7 +40,9 @@ export const radialConfig = () => ({
 export const axisConfig = () => ({   
       ticks: {
         font: {
-          size: chartFontSize
+          size: chartFontSize,
+          family: 'Jura',
+          weight: '300'
         },
         color: chartLabelColor
       },

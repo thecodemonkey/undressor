@@ -1,6 +1,7 @@
 import { Console } from 'console';
 import moment from 'moment';
-import { SendTweetV2Params, TwitterApi, TwitterApiReadOnly } from 'twitter-api-v2';
+import { json } from 'stream/consumers';
+import { HomeTimelineV1Paginator, SendTweetV2Params, TwitterApi, TwitterApiReadOnly } from 'twitter-api-v2';
 import { weeklyUsage } from './data/weekly.cnt';
 import { initClient, initOAuth1Client, initROClient } from './twitter.config'
 import { normalizeHashtags, printJSON, rnd } from './utils';
@@ -113,18 +114,74 @@ async function getInterests(twittername: string) {
     return result;
 }
 
-async function getHashtags(userid:string) {
+async function getHashtags(twittername:string) {
     const tclient = initROClient();
-    const hastags = await tclient.v2.search(`(from:${userid} OR retweets_of:${userid}) has:hashtags`, { max_results: 100, "tweet.fields": ['entities'] });
 
+    const user = await tclient.v2.userByUsername(twittername);
+
+
+    const tweets =  await tclient.v2.userLikedTweets(user.data.id, { max_results: 100, "tweet.fields": ['entities'] });
+    const hastags = await tclient.v2.search(`(from:${user.data.id} OR retweets_of:${user.data.id} OR @${user.data.id}) has:hashtags -is:retweet`, { max_results: 100, "tweet.fields": ['entities'] });
 
     const ht = hastags.data?.data?.filter(d => d.entities?.hashtags?.length  > 0)
-                                .flatMap(d => d.entities.hashtags.map(h => h.tag));
+                                  .flatMap(d => d.entities.hashtags.map(h => h.tag));
 
-    console.log('hastags:', normalizeHashtags(ht));
-    printJSON('HASHTAGS', hastags)
+    const ht2 = tweets.data?.data?.filter(d => d.entities?.hashtags?.length  > 0)
+                                  .flatMap(d => d.entities.hashtags.map(h => h.tag));
 
-    return normalizeHashtags(ht);
+
+    const result = normalizeHashtags((ht || []).concat(ht2));
+
+    console.log('hastags:', result);
+
+    // printJSON('HASHTAGS', hastags)
+
+    return result;
+}
+
+async function getActivity(twittername: string) : Promise<any> {
+
+    const tclient = initROClient();
+    const user = await tclient.v2.userByUsername(twittername);
+
+    const likes = await tclient.v2.userLikedTweets(user.data.id, {
+        "tweet.fields": ['created_at']
+    });
+
+    const counts = await tclient.v2.tweetCountRecent(`from:${twittername}`, {
+        // start_time:  start,
+        // end_time: end,
+        granularity: 'day'
+    });
+
+    const now = moment();
+    const lks = likes.data?.data?.map(d => moment(d.created_at))
+                                 .map(d => ({date:d, age: (d.diff(now, 'days') * -1)}))
+                                 .filter(d => d.age < 7);
+
+    const tweetsCnt = counts.data?.map(c => {
+        const m = moment(c.start);
+        return {
+            d: m,
+            count: c.tweet_count,
+            age: (m.diff(now, 'days') * -1)
+        }
+    })
+
+
+    const result = [{d:0},{d:1},{d:2},{d:3},{d:4},{d:5},{d:6}]
+    result.forEach((r:any, i:number) => {
+        r.t_count = tweetsCnt.find(t => t.age === r.d)?.count
+        r.l_count = lks.filter(l => l.age === r.d)?.length
+    });
+
+
+
+    // printJSON('LIKES: ', lks);
+    // printJSON('COUNTS: ', tweetsCnt);
+    // printJSON('RESULT: ', result);
+
+    return result;
 }
 
 async function reply(text: string, tweetid: string, images?:Buffer[]) {
@@ -182,4 +239,4 @@ async function getNewMentions(lastMentionId: string) {
     }
 }
 
-export { reply, send, getProfile, getNewMentions, getHashtags, getWeeklyCounts, getInterests }
+export { reply, send, getProfile, getNewMentions, getHashtags, getWeeklyCounts, getInterests, getActivity }

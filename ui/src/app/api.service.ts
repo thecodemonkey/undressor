@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, pipe } from 'rxjs';
+import { map, pipe, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DataMatrixCell, DataValue } from './model/dataset';
 import { Insights } from './model/insights';
@@ -33,6 +33,10 @@ export class ApiService {
 
   getWeeklyUsage(userId: string) {
     return this.http.get<DataMatrixCell[]>(`${environment.apiUrl}profile/${userId}/weekly`);
+  }
+
+  getActivity(userId: string) {
+    return this.http.get<any[]>(`${environment.apiUrl}${userId}/activity`);
   }
 
   getProfileBasics(userId: string) {

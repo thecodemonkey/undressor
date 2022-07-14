@@ -16,6 +16,8 @@ export class ImagesComponent implements OnInit {
   userId: string = '';
 
 
+  dataActivity$: Observable<any[]> = of([]);
+
   data$: Observable<DataValue[]> = of([{title:'', value:0}]);
   data2$: Observable<DataValue[]> = of([{title:'', value:0}]);
   tweetsTitle = 'tweets / 24h';
@@ -78,12 +80,14 @@ export class ImagesComponent implements OnInit {
 
         break;
 
+      case 'activity':
+        this.dataActivity$ = this.api.getActivity(this.userId);
+        break;
       case 'radar':
         break;
       case 'line':
         break;
-      case 'bar':
-        break;
+
     }
   }
 }
