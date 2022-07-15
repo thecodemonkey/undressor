@@ -6,6 +6,7 @@ import { ChartBaseComponent } from '../chart.base.component';
 import * as helpers from 'chart.js/helpers';
 import { rnd } from 'src/app/utils';
 import { chartBgColor, chartLabelColor, chartLightColor } from 'src/app/model/charts.options';
+import { timer } from 'rxjs';
 
 const daysOfWeek = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su' ];
 
@@ -16,6 +17,8 @@ const daysOfWeek = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su' ];
 })
 export class HeatmapComponent extends ChartBaseComponent {
   @Input() datavalues!: DataMatrixCell[];
+
+  maxValue: number = 100;
 
   _options:ChartConfiguration['options'] = {
     responsive: true,
@@ -94,6 +97,10 @@ export class HeatmapComponent extends ChartBaseComponent {
 
   override init(chrt: any) {
     this.data.datasets[0].data = this.datavalues;
+
+    timer(100).subscribe(() => {
+      this.maxValue = this.data.datasets[0].data.map((d:any) => d.r).sort((a:number,b:number)=>b-a)[0];
+    });
   }
 
 }

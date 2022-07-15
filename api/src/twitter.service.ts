@@ -1,29 +1,115 @@
 import { Console } from 'console';
 import moment from 'moment';
 import { json } from 'stream/consumers';
-import { HomeTimelineV1Paginator, SendTweetV2Params, TwitterApi, TwitterApiReadOnly } from 'twitter-api-v2';
+import { HomeTimelineV1Paginator, SendTweetV2Params, TweetV2, Tweetv2SearchParams, TwitterApi, TwitterApiReadOnly } from 'twitter-api-v2';
 import { weeklyUsage } from './data/weekly.cnt';
 import { initClient, initOAuth1Client, initROClient } from './twitter.config'
 import { normalizeHashtags, printJSON, rnd } from './utils';
 
+
+function normalizeDomains(ents: any[]) {
+    if (!ents || ents.length < 1) return [];
+
+    const result:any = {};
+    ents.forEach( (e:any) => {
+        result[e.domain_id] = {
+            domain: e.domain,
+            domain_id: e.domain_id,
+            domain_description: e.domain_description,
+            count: ( result[e.domain_id]?.count || 0) + 1}
+        }
+    );
+
+    return Object.keys(result).map(k => ({...result[k]}))
+                 .sort((a, b) => b.count - a.count);
+}
+
+function normalizeAnnotations(annts: any[]){
+    if (!annts || annts.length < 1) return [];
+
+    const result:any = {};
+    annts.forEach( (e:any) => {
+        result[e.text] = {
+            ...e,
+            count: ( result[e.text]?.count || 0) + 1}
+        }
+    );
+
+
+    return Object.keys(result).map(k => ({...result[k]}))
+                 .sort((a, b) => b.count - a.count);
+}
+
+function normalizeEntities(ents: any[]){
+    if (!ents || ents.length < 1) return [];
+
+    const result:any = {};
+    ents.forEach( (e:any) => {
+        result[e.id] = {
+            ...e,
+            count: ( result[e.id]?.count || 0) + 1}
+        }
+    );
+
+
+    return Object.keys(result).map(k => ({...result[k]}))
+                 .sort((a, b) => b.count - a.count);
+}
+
+function hashtags(result: TweetV2[]) {
+    return result?.filter(d => d.entities?.hashtags?.length  > 0)
+                  .flatMap(d => d.entities.hashtags.map(h => h.tag));
+}
+
+function annotations(result: TweetV2[]) {
+    return result?.filter(d => d.entities?.annotations?.length  > 0)
+                  .flatMap(d => d.entities.annotations.map(h => ({ type: h.type, text: h.normalized_text, confidence: h.probability})));
+}
+
+function entities(result: TweetV2[]) {
+    return result?.flatMap(d => d.context_annotations)
+                  .filter(ca => ca && ca?.entity)
+                  .map(a => ({...a.entity, domain: a.domain?.name, domain_id: a.domain?.id, domain_description: a.domain?.description }));
+}
+
+
+async function search(query: string, options: Partial<Tweetv2SearchParams>) {
+    const client = initClient();
+    return await client.v2.search(query, options);
+}
+
+
 async function getMentionsCounts24h(tclient: TwitterApiReadOnly, username:string) {
-    const start = moment().startOf('day').subtract(1, 'day');
+    const start = moment().subtract(1, 'day');
 
     return await tclient.v2.tweetCountRecent(`@${username} -to:${username}`, {
-        start_time:  start.toISOString(), end_time: start.endOf('day').toISOString(),
+        start_time:  start.toISOString(),
+        // end_time: start.endOf('day').toISOString(),
         granularity: 'day'
     });
 }
 
 async function getTweetCounts24h(tclient: TwitterApiReadOnly, userid:string, replies?: boolean) {
-    const start = moment().startOf('day').subtract(1, 'day');
+    const start = moment().subtract(1, 'day');
 
     const q = replies === true? '(is:retweet OR is:reply OR is:quote)' : '';
 
     return await tclient.v2.tweetCountRecent(`(from:${userid}) ${q} `, {
-        start_time:  start.toISOString(), end_time: start.endOf('day').toISOString(),
+        start_time:  start.toISOString(),
+        // end_time: start.endOf('day').toISOString(),
         granularity: 'day'
     });
+}
+
+async function getLikesCounts24h(tclient: TwitterApiReadOnly, userid:string) {
+    const likes = await tclient.v2.userLikedTweets(userid, {
+        "tweet.fields": ['created_at']
+    });
+
+    const now = moment();
+    return likes.data?.data?.map(d => moment(d.created_at))
+                            .map(d => ({date:d, age: (d.diff(now, 'days') * -1)}))
+                            .filter(d => d.age < 1);
 }
 
 async function getWeeklyCounts(userid: string) {
@@ -85,9 +171,10 @@ async function getProfile(twittername: string) {
     const tweetsCnt = await getTweetCounts24h(tclient, user.data.id);
     const repliesCnt = await getTweetCounts24h(tclient, user.data.id, true);
     const mentions = await getMentionsCounts24h(tclient, twittername);
+    const likes = await getLikesCounts24h(tclient, user.data.id);
 
     console.log('### read user info: ###\n\n');
-    console.log('counts', mentions);
+    // console.log('counts', mentions);
 
     // const likes = await tclient.v2.userLikedTweets(user.data.id);
     // console.log('likes', likes);
@@ -99,7 +186,8 @@ async function getProfile(twittername: string) {
         listed_count: user.data.public_metrics.listed_count,
         tweet_count: tweetsCnt.meta.total_tweet_count - repliesCnt.meta.total_tweet_count,
         reply_count: repliesCnt.meta.total_tweet_count,
-        mention_count: mentions.meta.total_tweet_count
+        mention_count: mentions.meta.total_tweet_count,
+        likes_count: likes.length
     };
 }
 
@@ -148,7 +236,13 @@ async function getActivity(twittername: string) : Promise<any> {
         "tweet.fields": ['created_at']
     });
 
-    const counts = await tclient.v2.tweetCountRecent(`from:${twittername}`, {
+    const answers = await tclient.v2.tweetCountRecent(`from:${twittername} (is:retweet OR is:reply OR is:quote)`, {
+        // start_time:  start,
+        // end_time: end,
+        granularity: 'day'
+    });
+
+    const counts = await tclient.v2.tweetCountRecent(`from:${twittername} (-is:retweet -is:reply -is:quote)`, {
         // start_time:  start,
         // end_time: end,
         granularity: 'day'
@@ -168,11 +262,21 @@ async function getActivity(twittername: string) : Promise<any> {
         }
     })
 
+    const answersCnt = answers.data?.map(c => {
+        const m = moment(c.start);
+        return {
+            d: m,
+            count: c.tweet_count,
+            age: (m.diff(now, 'days') * -1)
+        }
+    })
+
 
     const result = [{d:0},{d:1},{d:2},{d:3},{d:4},{d:5},{d:6}]
     result.forEach((r:any, i:number) => {
         r.t_count = tweetsCnt.find(t => t.age === r.d)?.count
-        r.l_count = lks.filter(l => l.age === r.d)?.length
+        r.l_count = lks.filter(l => l.age === r.d)?.length,
+        r.a_count = answersCnt.find(t => t.age === r.d)?.count
     });
 
 
@@ -239,4 +343,45 @@ async function getNewMentions(lastMentionId: string) {
     }
 }
 
-export { reply, send, getProfile, getNewMentions, getHashtags, getWeeklyCounts, getInterests, getActivity }
+async function analyseLink(tweetid: string) {
+    const tclient = initClient();
+
+    const tweet = await tclient.v2.singleTweet(tweetid, { "tweet.fields": ['entities', 'attachments'], "media.fields": ['url'] });
+    const url = tweet.data.entities.urls[0];
+
+    const result = await this.search(
+        `(has:links url:"${url.expanded_url}" has:hashtags)`,
+        {
+            "tweet.fields": ['entities', 'context_annotations', 'attachments'],
+            max_results: 100
+        }
+    );
+
+    return {
+        url: url.display_url,
+        url_expanded: url.expanded_url,
+        hashtags : normalizeHashtags(this.hashtags(result.data?.data)),
+        entities : normalizeEntities(this.entities(result.data?.data)),
+        annotations : normalizeAnnotations(this.annotations(result.data?.data)),
+        domains : normalizeDomains(this.entities(result.data?.data))
+    }
+}
+
+export {
+    reply,
+    send,
+    getProfile,
+    getNewMentions,
+    getHashtags,
+    getWeeklyCounts,
+    getInterests,
+    getActivity,
+    hashtags,
+    search,
+    annotations,
+    entities,
+    normalizeEntities,
+    normalizeAnnotations,
+    normalizeDomains,
+    analyseLink
+}

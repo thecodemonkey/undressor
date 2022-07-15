@@ -1,6 +1,7 @@
 import { ChartOptions, LayoutPosition } from 'chart.js';
 
 export const chartFontSize = 36;
+export const chartThirdColor = '#84BCB977';
 export const chartSecondColor = '#84BCB9aa';
 export const chartLightColor = '#84BCB9';
 export const chartBgColor = '#171D1E';

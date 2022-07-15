@@ -15,13 +15,15 @@ export class ImagesComponent implements OnInit {
   id: string = '';
   userId: string = '';
   title: string = '';
+  title2: string | null = null;
 
+  linkDomains$ : Observable<any[]> = of ([]);
 
   dataActivity$: Observable<any[]> = of([]);
 
   data$: Observable<DataValue[]> = of([{title:'', value:0}]);
   data2$: Observable<DataValue[]> = of([{title:'', value:0}]);
-  tweetsTitle = 'tweets / 24h';
+  tweetsTitle = 'activity / 24h';
 
   dataWeekly$: Observable<DataMatrixCell[]> = of([{x:0, y:0, r:0}]);
 
@@ -57,11 +59,9 @@ export class ImagesComponent implements OnInit {
         break;
       case 'weekly':
         this.dataWeekly$ = this.api.getWeeklyUsage(this.userId);
-        this.title = `when exactly and how often does <strong>@${this.userId}</strong> tweet?`;
+        this.title = `when does <strong>@${this.userId}</strong> tweet most often?`;
         break;
       case 'basics':
-        
-        //this.data2$ = of([{ title: 'follower', value: 20}, { title: 'followed', value: 550}, { title: '', value: 0}])
         this.data$ = this.api.getProfileBasics(this.userId)               
                              .pipe(map((d:any) => [
                                   { title: 'follower', value: d.followers_count}, 
@@ -72,23 +72,62 @@ export class ImagesComponent implements OnInit {
 
         this.data2$ = this.api.getProfileBasics(this.userId)
           .pipe(tap((d:any) => {
-            this.tweetsTitle = `${this.tweetsTitle}<br/><span class="digit" style="font-size:3.4rem">${humanize.compactInteger(d.tweet_count + d.reply_count)}</span>`;
+            this.tweetsTitle = `${this.tweetsTitle}<br/><span class="digit" style="font-size:3.4rem">${humanize.compactInteger(d.tweet_count + d.reply_count + d.likes_count)}</span>`;
           }))
           .pipe(map((d:any) => [
             { title: 'tweets', value: d.tweet_count}, 
             { title: 'replies', value: d.reply_count}, 
-            { title: 'mentions', value: d.mention_count}            
+            { title: 'likes', value: d.likes_count}            
           ])
         )       
 
-        this.title = `how popular is <strong>@${this.userId}</strong>? How many tweets has he posted in the last 24 hours?`;
+        this.title = `how popular is <strong>@${this.userId}</strong>?`; 
+        this.title2 = `how much has <strong>@${this.userId}</strong> tweeted in the last 24 hours?`;
+
         break;
 
       case 'activity':
         this.dataActivity$ = this.api.getActivity(this.userId);
         this.title = `how do the tweets from <strong>@${this.userId}</strong> look like? `;
         break;
-      case 'radar':
+      case 'link-domains':
+        this.linkDomains$ = this.api.getLinkAnalysis(this.userId)
+                                    .pipe(tap((d:any) => {
+                                      this.title = `other tweets with the url <strong>${ d.url }</strong> could be approximately mapped to these domains.`;
+                                    }))        
+                                    .pipe(map((d: any) => 
+                                      d.domains.map((dom:any) => ({
+                                        title: dom.domain, value: dom.count
+                                      }))))
+        break;
+      case 'link-hashtags':
+        this.data$ = this.api.getLinkAnalysis(this.userId)
+                             .pipe(tap((d:any) => {
+                              this.title = `other tweets with url <strong>${ d.url }</strong> contained these hashtags.`;
+                             }))        
+                             .pipe(map((d: any) => d.hashtags))
+        break;
+      case 'link-annotations':
+        this.data$ = this.api.getLinkAnalysis(this.userId)
+                            .pipe(tap((d:any) => {
+                              this.title = `other tweets with url <strong>${ d.url }</strong> contained these annotations.`;
+                            }))
+                            .pipe(map((d: any) => 
+                              d.annotations.map((a:any) => ({
+                                title: a.text, value: a.count
+                              }))))
+        break;
+      case 'link-entities':
+        this.data$ = this.api.getLinkAnalysis(this.userId)
+                            .pipe(tap((d:any) => {
+                              this.title = `other tweets with url <strong>${ d.url }</strong> contained these entities.`;
+                            }))
+                            .pipe(map((d: any) => 
+                              d.entities.map((a:any) => ({
+                                title: a.name, value: a.count
+                            }))))
+
+
         break;
       case 'line':
         break;

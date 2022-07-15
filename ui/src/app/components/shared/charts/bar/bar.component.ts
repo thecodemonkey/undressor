@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChartData } from 'chart.js';
-import { chartFontSize, chartLabelColor, chartGridColorY, axisConfig } from 'src/app/model/charts.options';
+import { chartFontSize, chartLabelColor, chartGridColorY, axisConfig, chartThirdColor } from 'src/app/model/charts.options';
 import { DataValue } from 'src/app/model/dataset';
 import { ChartBaseComponent } from '../chart.base.component';
 import { chartLightColor, chartSecondColor } from '../../../../model/charts.options';
@@ -16,7 +16,8 @@ export class BarComponent extends ChartBaseComponent {
   data: ChartData<'bar'> = {
     labels: ['7 days ago', '6', '5', '4', '3', 'yesterday', 'today'],
     datasets: [ 
-      { label: 'tweets', data: [], stack: 'a', backgroundColor: chartSecondColor },
+      { label: 'thread started', data: [], stack: 'a', backgroundColor: chartThirdColor},
+      { label: 'thread answered', data: [], stack: 'a', backgroundColor: chartSecondColor },
       { label: 'likes', data: [], stack: 'a', backgroundColor: chartLightColor}
     ]
   };
@@ -49,8 +50,9 @@ export class BarComponent extends ChartBaseComponent {
     //this.data.labels = this.datavalues.map(d => d.title);
     const dat = this.datavalues.reverse();
 
-    this.data.datasets[0].data = dat.map(d => d.t_count);
-    this.data.datasets[1].data = dat.map(d => d.l_count);
+    this.data.datasets[0].data = dat.map(d => d.a_count);
+    this.data.datasets[1].data = dat.map(d => d.t_count);
+    this.data.datasets[2].data = dat.map(d => d.l_count);
 
     const lg = chrt?.options.plugins?.legend;
     if (lg) {

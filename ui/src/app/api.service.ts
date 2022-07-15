@@ -42,4 +42,8 @@ export class ApiService {
   getProfileBasics(userId: string) {
     return this.http.get<DataValue[]>(`${environment.apiUrl}profile/${userId}/basics`);
   }
+
+  getLinkAnalysis(tweetId: string) {
+    return this.http.get<any[]>(`${environment.apiUrl}${tweetId}/link`);
+  }
 }

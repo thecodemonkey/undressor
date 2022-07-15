@@ -8,13 +8,22 @@
         <app-ring *ngIf="data$ | async as da" [datavalues]="da" title="follower"></app-ring>
         <app-ring *ngIf="data2$ | async as da" [datavalues]="da" [title]="tweetsTitle"></app-ring>
     </div>    
-    <app-polar [datavalues]="dsInterests" *ngIf="id == 'interests'"></app-polar>
+
     <app-tagcloud *ngIf="id == 'hashtags' && (data$ | async) as da" [datavalues]="da"></app-tagcloud>
     <app-heatmap *ngIf="id == 'weekly' && (dataWeekly$ | async) as da" [datavalues]="da"></app-heatmap>
 
-    <app-radar [datavalues]="dsInterests" *ngIf="id == 'radar'"></app-radar>
     <app-linearea [datavalues]="dsInterests" *ngIf="id == 'line'"></app-linearea>
     <app-bar *ngIf="id == 'activity' && (dataActivity$ | async) as da" [datavalues]="da" ></app-bar>
+
+    <!-- <app-radar [datavalues]="dsInterests" *ngIf="id == 'radar'"></app-radar> -->
+    <app-radar *ngIf="id == 'link-domains' && (linkDomains$ | async) as da" [datavalues]="da"></app-radar>
+    <app-tagcloud *ngIf="id == 'link-hashtags' && (data$ | async) as da" [datavalues]="da"></app-tagcloud>
+    <app-tagcloud *ngIf="id == 'link-annotations' && (data$ | async) as da" [datavalues]="da"></app-tagcloud>
+    <app-tagcloud *ngIf="id == 'link-entities' && (data$ | async) as da" [datavalues]="da"></app-tagcloud>
 </div>
 
-<div class="title" [innerHtml]="title"></div>
+<div class="title" [innerHtml]="title" *ngIf="!title2"></div>
+<div class="title-multi" *ngIf="title2">
+    <div [innerHtml]="title"></div>
+    <div [innerHtml]="title2"></div>
+</div>

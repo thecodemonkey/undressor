@@ -22,6 +22,18 @@ const cached = async (key:string, clbk: () => any) => {
 }
 
 
+app.get('/:tweetid/link', async (req, res) => {
+
+  let result = cache.get(`link-${req.params.tweetid}`);
+
+  if (!result) {
+    result = await twitter.analyseLink(req.params.tweetid);
+    cache.set(`link-${req.params.tweetid}`, result);
+  }
+
+  res.json( result);
+});
+
 app.get('/profile/:userid/basics', async (req, res) => {
 
   let profile = cache.get(`basic-${req.params.userid}`);

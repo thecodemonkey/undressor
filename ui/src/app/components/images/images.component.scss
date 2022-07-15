@@ -15,12 +15,32 @@
         height: auto;
     }
 
-    .title {
+    .title, .title-multi {
         position: absolute;
         color: #84BCB9aa;
         bottom: 50px;
         font-size: 20px;
     }
+
+    .title-multi {
+        left: 0;
+        right: 0;
+        div {
+            position: absolute;
+            bottom: 0;
+            right: unset;
+            left: 20px;
+            height: 50px;
+            width: 50%!important;
+            display: inline-block;
+            text-align: center;
+        }
+
+        :nth-child(1n+2){
+            left: unset;
+            right: 30px;
+        }
+    }    
 
     .chart-area {
         position: absolute;
