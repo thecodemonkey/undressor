@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 import puppeteer from 'puppeteer';
 import fs from 'fs';
-import { title } from "process";
+
 
 function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -22,10 +22,14 @@ async function urlUrlToBuffer(url: string, options: { width: number, height:numb
     page.setViewport({ width: options.width, height: options.height, deviceScaleFactor: 2})
     await page.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36");
 
+
+    console.log(`PUPPETEER: call url: ${url}`);
     await page.goto(url, { waitUntil: ["load","networkidle0"]  });
 
 
     if (wait > 0) await sleep(wait);
+
+    console.log(`PUPPETEER: call url done.`);
 
     if (options.convertCanvas2Image) {
         // const myFont = new FontFace('Jura', 'url(https://fonts.googleapis.com/css2?family=Jura:wght@300;400;600&display=swap)');
@@ -53,11 +57,13 @@ async function urlUrlToBuffer(url: string, options: { width: number, height:numb
         })
     }
 
+    console.log(`PUPPETEER: take screenshot.`);
     const image = await page.screenshot({type: 'png'});
 
     if (options.headless)
         await browser.close();
 
+    console.log(`PUPPETEER: return buffer ${ image.length }.`);
     return image as Buffer;
 }
 

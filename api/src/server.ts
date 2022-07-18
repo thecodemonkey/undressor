@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { NextFunction } from 'express'
 import cors from 'cors'
 import * as twitter from './twitter.service'
 import NodeCache from 'node-cache' ;
@@ -8,6 +8,10 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(cors());
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.log('Unhandled Rejection at:', reason || reason)
+})
 
 
 const cached = async (key:string, clbk: () => any) => {

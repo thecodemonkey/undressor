@@ -7,6 +7,34 @@ import { initClient, initOAuth1Client, initROClient } from './twitter.config'
 import { normalizeHashtags, printJSON, rnd } from './utils';
 
 
+async function getTweet(id: string) {
+
+    const tclient = initROClient();
+    const user = await tclient.v2.singleTweet(id, {
+        "user.fields": ['name', 'username', 'description'],
+        "tweet.fields": ['entities', 'attachments'],
+        "media.fields": ['url']
+    });
+
+    return user.data;
+}
+
+async function getUserByName(name: string) {
+
+    const tclient = initROClient();
+    const user = await tclient.v2.userByUsername(name, { "user.fields": ['name', 'username', 'description'] });
+
+    return user.data;
+}
+
+async function getUserById(id: string) {
+
+    const tclient = initROClient();
+    const user = await tclient.v2.user(id, { "user.fields": ['name', 'username', 'description'] });
+
+    return user.data;
+}
+
 function normalizeDomains(ents: any[]) {
     if (!ents || ents.length < 1) return [];
 
@@ -203,28 +231,35 @@ async function getInterests(twittername: string) {
 }
 
 async function getHashtags(twittername:string) {
+
     const tclient = initROClient();
 
-    const user = await tclient.v2.userByUsername(twittername);
+    try{
+        const user = await tclient.v2.userByUsername(twittername);
 
 
-    const tweets =  await tclient.v2.userLikedTweets(user.data.id, { max_results: 100, "tweet.fields": ['entities'] });
-    const hastags = await tclient.v2.search(`(from:${user.data.id} OR retweets_of:${user.data.id} OR @${user.data.id}) has:hashtags -is:retweet`, { max_results: 100, "tweet.fields": ['entities'] });
-
-    const ht = hastags.data?.data?.filter(d => d.entities?.hashtags?.length  > 0)
-                                  .flatMap(d => d.entities.hashtags.map(h => h.tag));
-
-    const ht2 = tweets.data?.data?.filter(d => d.entities?.hashtags?.length  > 0)
-                                  .flatMap(d => d.entities.hashtags.map(h => h.tag));
+        const tweets =  await tclient.v2.userLikedTweets(user.data.id, { max_results: 100, "tweet.fields": ['entities'] });
+        const hastags = await tclient.v2.search(`(from:${twittername} OR retweets_of:${twittername} OR @${twittername}) has:hashtags -is:retweet`, { max_results: 100, "tweet.fields": ['entities'] });
 
 
-    const result = normalizeHashtags((ht || []).concat(ht2));
 
-    console.log('hastags:', result);
+        const ht = hastags.data?.data?.filter(d => d.entities?.hashtags?.length  > 0)
+                                    .flatMap(d => d.entities.hashtags.map(h => h.tag));
 
-    // printJSON('HASHTAGS', hastags)
+        const ht2 = tweets.data?.data?.filter(d => d.entities?.hashtags?.length  > 0)
+                                    .flatMap(d => d.entities.hashtags.map(h => h.tag));
 
-    return result;
+
+        const result = normalizeHashtags((ht || []).concat(ht2));
+
+        console.log('hastags:', result);
+
+        // printJSON('HASHTAGS', hastags)
+
+        return result;
+    } catch(e) {
+        console.error('error occured', e);
+    }
 }
 
 async function getActivity(twittername: string) : Promise<any> {
@@ -288,22 +323,30 @@ async function getActivity(twittername: string) : Promise<any> {
     return result;
 }
 
-async function reply(text: string, tweetid: string, images?:Buffer[]) {
+async function reply(text: string, tweetid: string, images?:Buffer[], dryRun?:boolean) {
     const tclient = initOAuth1Client();
 
     const params:Partial<SendTweetV2Params> = { media : {} };
 
     if (images && images.length > 0) {
 
-        params.media.media_ids = await Promise.all(
-            images.map(i => tclient.v1.uploadMedia(i, { mimeType: 'image/png' }))
-        );
+        if (!dryRun) {
+            params.media.media_ids = await Promise.all(
+                images.map(i => tclient.v1.uploadMedia(i, { mimeType: 'image/png' }))
+            );
+        } else {
+            console.log(`DRY RUN: upload media`);
+        }
     }
 
 
 
-    const res = await tclient.v2.reply(text, tweetid, params);
-    console.debug('send reply', JSON.stringify(res, null, 4));
+    if (!dryRun) {
+        const res = await tclient.v2.reply(text, tweetid, params);
+        console.debug('send reply', JSON.stringify(res, null, 4));
+    } else {
+        console.log(`DRY RUN: send reply \n${text}`);
+    }
 }
 
 async function send(text: string) {
@@ -327,7 +370,9 @@ async function getNewMentions(lastMentionId: string) {
     // console.log(`'${process.env.TWITTER_NAME}' id is: ${user.data.id} `);
 
     const mentions = await twitter.v2.userMentionTimeline(user.data.id, {
-        since_id: lastMentionId
+        since_id: lastMentionId,
+        "tweet.fields": ['in_reply_to_user_id', 'author_id', 'conversation_id', 'reply_settings', 'referenced_tweets', 'created_at' ],
+        expansions: [ 'referenced_tweets.id', 'referenced_tweets.id.author_id']
     });
 
     const mentResult = mentions.data;
@@ -339,15 +384,22 @@ async function getNewMentions(lastMentionId: string) {
     } else {
         console.log('\nmentions: ', JSON.stringify(mentResult.data, null, 4));
 
-        return mentResult.data[0];
+        return mentResult.data;
     }
 }
 
 async function analyseLink(tweetid: string) {
     const tclient = initClient();
 
-    const tweet = await tclient.v2.singleTweet(tweetid, { "tweet.fields": ['entities', 'attachments'], "media.fields": ['url'] });
-    const url = tweet.data.entities.urls[0];
+    const tweet = await tclient.v2.singleTweet(tweetid, {
+        "tweet.fields": ['entities', 'attachments'],
+        "media.fields": ['url']
+    });
+
+    const urls = tweet.data?.entities?.urls;
+    const url = urls && urls.length  > 0? urls[0] : null;
+    if (!url) throw Error(`no url/link found in tweet: ${tweetid}`);
+
 
     const result = await this.search(
         `(has:links url:"${url.expanded_url}" has:hashtags)`,
@@ -383,5 +435,8 @@ export {
     normalizeEntities,
     normalizeAnnotations,
     normalizeDomains,
-    analyseLink
+    analyseLink,
+    getUserByName,
+    getUserById,
+    getTweet
 }

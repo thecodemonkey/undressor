@@ -31,15 +31,25 @@ async function postTweet(twittername: string, buffers: Buffer[]) {
 
 
 async function start() {
-    const username = 'elonmusk';
+    // const username = 'elonmusk';
+
+    // const user1 = await twitter.getUserById('47954872');
+    // printJSON('USER BY ID', user1);
+
+    // const user2 = await twitter.getUserByName('chillya');
+    // printJSON('USER BY NAME', user2)
+
+    const tweet = await twitter.getTweet('1548579806484504576');
+    printJSON('TWEET', tweet);
+
 
     // const imageBuffers = await generateImages(username);
     // // await saveImages(imageBuffers);
     // await postTweet(username, imageBuffers);
 
-    const result = await twitter.analyseLink('1547870812245331969');
+    // const result = await twitter.analyseLink('1547870812245331969');
 
-    printJSON('ANALYSE LINK: ', result);
+    // printJSON('ANALYSE LINK: ', result);
 
     // printJSON('HASHTAGS: ', hashtags);
     // printJSON('ANNOTATIONS: ', annotations);
