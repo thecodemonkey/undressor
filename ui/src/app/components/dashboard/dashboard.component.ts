@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
   }
 
   load(name: string) {
-    this.data = this.api.getData(name);
+    //this.data = this.api.getData(name);
   }  
 
 }

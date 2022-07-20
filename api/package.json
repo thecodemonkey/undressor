@@ -39,7 +39,8 @@
     "node-fetch": "^2.6.6",
     "pg": "^8.7.3",
     "puppeteer": "^15.3.1",
-    "twitter-api-v2": "^1.12.2"
+    "twitter-api-v2": "^1.12.2",
+    "whoiser": "^1.13.1"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.6.2",

@@ -14,12 +14,12 @@ export class ApiService {
   
   constructor(private http: HttpClient) { }
 
-  getData(userId: string) {
+  getProfile(userId: string) {
     return this.http.get<Profile>(`${environment.apiUrl}profile/${userId}`);
   }
 
   getInsights(userid: string) {
-    return this.http.get<Insights>(`${environment.apiUrl}insights/${userid}`);
+    return this.http.get<Insights[]>(`${environment.apiUrl}insights/${userid}`);
   }
 
 

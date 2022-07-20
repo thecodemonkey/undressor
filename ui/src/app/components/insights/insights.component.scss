@@ -90,7 +90,7 @@
         
 
         .avatar {
-            background-image: url('/assets/faces/f-0.png');
+            // background-image: url('/assets/faces/f-0.png');
             background-repeat: no-repeat;
             background-size: cover;
             height: 150px;
@@ -99,7 +99,19 @@
             border-radius: 100%;
             // outline: 10px solid #00000011;
             border: 10px solid #90a4a3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            // backdrop-filter: blur(8px);
             
+            img {
+                display: none;
+                width: 56px;
+                height: 56px;
+                border-radius: 100%;
+                border: 1px solid #000;
+                
+            }
         }
 
         .name {

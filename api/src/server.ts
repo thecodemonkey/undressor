@@ -2,6 +2,7 @@ import express, { NextFunction } from 'express'
 import cors from 'cors'
 import * as twitter from './twitter.service'
 import NodeCache from 'node-cache' ;
+import { printJSON } from './utils';
 const cache = new NodeCache({ stdTTL: 0} );
 
 const app = express();
@@ -10,7 +11,7 @@ const port = process.env.PORT;
 app.use(cors());
 
 process.on('unhandledRejection', (reason, promise) => {
-  console.log('Unhandled Rejection at:', reason || reason)
+  printJSON('UNHANDLED REJECTION: ', reason || reason)
 })
 
 
@@ -43,7 +44,7 @@ app.get('/profile/:userid/basics', async (req, res) => {
   let profile = cache.get(`basic-${req.params.userid}`);
 
   if (!profile) {
-    profile = await twitter.getProfile(req.params.userid);
+    profile = await twitter.getBasics(req.params.userid);
     cache.set(`basic-${req.params.userid}`, profile);
   }
 
@@ -90,14 +91,27 @@ app.get('/:userid/activity', async (req, res) => {
   );
 });
 
-
 app.get('/profile/:twittername', async (req, res) => {
-  const profile = await twitter.getProfile(req.params.twittername);
+  let result = cache.get(`profile-${req.params.twittername}`);
 
-  res.json( profile);
+  if (!result) {
+    result = await twitter.getProfile(req.params.twittername);
+    cache.set(`profile-${req.params.twittername}`, result);
+  }
+
+  res.json( result);
 });
 
+app.get('/insights/:twittername', async (req, res) => {
+  let result = cache.get(`insights-${req.params.twittername}`);
 
+  if (!result) {
+    result = await twitter.getInsights(req.params.twittername);
+    cache.set(`insights-${req.params.twittername}`, result);
+  }
+
+  res.json( result);
+});
 
 app.get('/alive', async (req, res) => {
   res.status(200).send();

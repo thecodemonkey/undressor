@@ -1,10 +1,8 @@
-import { Console } from 'console';
 import moment from 'moment';
-import { json } from 'stream/consumers';
 import { HomeTimelineV1Paginator, SendTweetV2Params, TweetV2, Tweetv2SearchParams, TwitterApi, TwitterApiReadOnly } from 'twitter-api-v2';
-import { weeklyUsage } from './data/weekly.cnt';
 import { initClient, initOAuth1Client, initROClient } from './twitter.config'
 import { normalizeHashtags, printJSON, rnd } from './utils';
+import whoiser from 'whoiser';
 
 
 async function getTweet(id: string) {
@@ -191,10 +189,12 @@ async function getWeeklyCounts(userid: string) {
     return result;
 }
 
-async function getProfile(twittername: string) {
+async function getBasics(twittername: string) {
     const tclient = initROClient();
 
-    const user = await tclient.v2.userByUsername(twittername, { "user.fields" : ['public_metrics','protected','profile_image_url']});
+    const user = await tclient.v2.userByUsername(twittername, {
+        "user.fields" : ['public_metrics']
+    });
 
     const tweetsCnt = await getTweetCounts24h(tclient, user.data.id);
     const repliesCnt = await getTweetCounts24h(tclient, user.data.id, true);
@@ -202,21 +202,83 @@ async function getProfile(twittername: string) {
     const likes = await getLikesCounts24h(tclient, user.data.id);
 
     console.log('### read user info: ###\n\n');
+    printJSON('USER', user);
     // console.log('counts', mentions);
 
     // const likes = await tclient.v2.userLikedTweets(user.data.id);
     // console.log('likes', likes);
 
     return {
-        profile_image_url: user.data.profile_image_url,
         followers_count: user.data.public_metrics.followers_count,
         following_count: user.data.public_metrics.following_count,
         listed_count: user.data.public_metrics.listed_count,
         tweet_count: tweetsCnt.meta.total_tweet_count - repliesCnt.meta.total_tweet_count,
         reply_count: repliesCnt.meta.total_tweet_count,
         mention_count: mentions.meta.total_tweet_count,
-        likes_count: likes.length
+        likes_count: likes.length,
     };
+}
+
+async function getProfile(twittername: string) {
+    const tclient = initROClient();
+
+    const user = await tclient.v2.userByUsername(twittername, {
+        "user.fields" : [
+            'name',
+            'username',
+            'public_metrics',
+            'protected',
+            'profile_image_url',
+            'description',
+            'verified',
+            'created_at',
+            'location'
+        ]
+    });
+
+    const tweetsCnt = await getTweetCounts24h(tclient, user.data.id);
+    const repliesCnt = await getTweetCounts24h(tclient, user.data.id, true);
+    const mentions = await getMentionsCounts24h(tclient, twittername);
+    const likes = await getLikesCounts24h(tclient, user.data.id);
+
+    console.log('### read user info: ###\n\n');
+
+    const usr = user.data;
+
+    const profile = {
+        username: usr.username,
+        name: usr.name,
+        description: usr.description,
+        location: usr.location,
+        ontwitter_since: usr.created_at,
+        profile_image_url: usr.profile_image_url,
+        flollower: [
+          { label: 'follower', value: usr.public_metrics.followers_count },
+          { label: 'following', value: usr.public_metrics.following_count },
+          { label: 'listed', value: usr.public_metrics.listed_count }
+        ], tweets: [
+          { label: 'tweets', value: tweetsCnt.meta.total_tweet_count - repliesCnt.meta.total_tweet_count },
+          { label: 'replies', value: repliesCnt.meta.total_tweet_count },
+          { label: 'likes', value: likes.length },
+          { label: 'mentions', value: mentions.meta.total_tweet_count }
+        ]
+      };
+
+    printJSON('PROFILE', profile);
+
+    return profile;
+
+    // return {
+    //     profile_image_url: user.data.profile_image_url,
+    //     followers_count: user.data.public_metrics.followers_count,
+    //     following_count: user.data.public_metrics.following_count,
+    //     listed_count: user.data.public_metrics.listed_count,
+    //     tweet_count: tweetsCnt.meta.total_tweet_count - repliesCnt.meta.total_tweet_count,
+    //     reply_count: repliesCnt.meta.total_tweet_count,
+    //     mention_count: mentions.meta.total_tweet_count,
+    //     likes_count: likes.length,
+    //     description: user.data.description
+    // };
 }
 
 async function getInterests(twittername: string) {
@@ -409,19 +471,44 @@ async function analyseLink(tweetid: string) {
         }
     );
 
+    // const sameGuy = await this.search(
+    //     `url:"${url.expanded_url}" has:links from:`,
+    //     {
+    //         "tweet.fields": ['entities', 'context_annotations', 'attachments'],
+    //         max_results: 100
+    //     }
+    // );
+
+
+
     return {
         url: url.display_url,
         url_expanded: url.expanded_url,
         hashtags : normalizeHashtags(this.hashtags(result.data?.data)),
         entities : normalizeEntities(this.entities(result.data?.data)),
         annotations : normalizeAnnotations(this.annotations(result.data?.data)),
-        domains : normalizeDomains(this.entities(result.data?.data))
+        domains : normalizeDomains(this.entities(result.data?.data)),
+        alltags : this.hashtags
     }
+}
+
+async function getInsights(twittername: string) {
+    return [
+        { id: 1, active: false, title: 'When exactly is undressor active?', text: 'Since undressor is most likely a BOT, it is active throughout the entire day. He is most active on Wednesday and Thursday between 16:00 and 18:00. He practically never sleeps.'},
+        { id: 2, title: 'What is the Twitter behavior like?', text: 'undressor frequently replies to mentions and almost never initiates his own discussions. He never likes. Most of the time, undressor is active in Europe and uses English as his most common language. However, he also knows German. Many humans master 2 languages, for bots it is an over-average performance. Most often a server, is used as the end device and only rarely mobile device.'},
+        { id: 3, title: 'What do the content look like?', text: 'undressor is an alrounder. He is interested in many different topics. The content is most often written in a neutral way and only rarely negative. The tweets rarely contain hashtags or texts. Links to external websites are most often included.'},
+        { id: 4, title: 'What is the potential influence on the entire social network?', text: 'undressor does not like to follow other accounts, he likes to let others follow himself. Although he does not have a lot of followers, he is very active and is often mentioned in other tweets. Therefore, the potential influence is medium. The growth rate of his followers indicates an increasing growth.'},
+      ];
+}
+
+async function whois(url: string) {
+    return await whoiser(url);
 }
 
 export {
     reply,
     send,
+    getBasics,
     getProfile,
     getNewMentions,
     getHashtags,
@@ -438,5 +525,7 @@ export {
     analyseLink,
     getUserByName,
     getUserById,
-    getTweet
+    getTweet,
+    getInsights,
+    whois
 }

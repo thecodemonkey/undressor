@@ -1,7 +1,7 @@
 <app-header></app-header>
 <div class="story-outer">
     <div class="story">
-        <h2>Who is <strong>undressor</strong> ?</h2>
+        <h2>Who is <strong>{{profile?.username}}</strong> ?</h2>
 
         <div [id]="'cnt-' + i.id" class="item" [class.active]="i.active" *ngFor="let i of insights" >
             <h3>{{ i.title }}</h3>
@@ -20,12 +20,14 @@
     <img src="assets/dummy/chart-daily.png" />
 </div>
 <div class="profile">
-    <div class="avatar"></div>
-    <div class="name">undressor</div>
-    <div class="claim">Only when the clothes fall does the true soul become visible &centerdot; data fetish &centerdot; bot &centerdot; ai</div>
+    <div class="avatar" [style.background-image]="'url(' + profile?.profile_image_url + ')'">
+        <img [src]="profile?.profile_image_url" />
+    </div>
+    <div class="name">{{profile.username}}</div>
+    <div class="claim">{{profile.description}}</div>
     <div class="location">
         <fa-icon [icon]="faLocationDot"></fa-icon>
-        <span>omnipresent</span>
+        <span>{{profile.location}}</span>
     </div>
     <div class="follower">
         <app-singlebar [data]="profile.flollower"></app-singlebar>
@@ -36,10 +38,10 @@
     <div class="exp"> 
         <!-- on twitter for<br/>  -->
         <div class="since">
-            since <br/> <span class="val">May 13th, 2007</span>
+            since <br/> <span class="val">{{ profile.ontwitter_since | date }}</span>
         </div>
         <div class="for">
-            for <span class="val">3</span><br/> months on twitter
+            for <span class="val">{{ profile.ontwitter_since | duration }}</span><br/> on twitter
         </div>
     </div>
     <!-- <div style="font-size: .8rem; padding-top: 20px">on twitter</div> -->

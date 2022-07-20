@@ -39,8 +39,11 @@ async function start() {
     // const user2 = await twitter.getUserByName('chillya');
     // printJSON('USER BY NAME', user2)
 
-    const tweet = await twitter.getTweet('1548579806484504576');
-    printJSON('TWEET', tweet);
+    // const tweet = await twitter.getTweet('1548579806484504576');
+    // printJSON('TWEET', tweet);
+
+    const whois = await twitter.whois('iljaleyberman.com');
+    printJSON('WHOIS', whois);
 
 
     // const imageBuffers = await generateImages(username);

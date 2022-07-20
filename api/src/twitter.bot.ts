@@ -42,14 +42,12 @@ async function processAnswer(mention:TweetV2, dryRun?:boolean) {
     if (mention) {
         console.log('persist lastmention...', mention);
 
-        if (!dryRun)
-        {
-            await db.updateLastMention(mention);
-        }
+        if (!dryRun) await db.updateLastMention(mention);
+
 
         // get author of original tweet. if mention is not inside reply, use author_id of the guy who asked undressor.
         const ogAuthorId = mention.in_reply_to_user_id || mention.author_id;
-        const ogTweetId = mention.referenced_tweets? mention.referenced_tweets[0].id : mention.id; // '1547870812245331969';
+        const ogTweetId = mention.referenced_tweets? mention.referenced_tweets[0].id : mention.id; // '1547870812245331969'; //'1548686102457946113';
 
         const user = await tclient.getUserById(ogAuthorId);
         const username = user.username;
@@ -113,9 +111,6 @@ async function run(dryRun?:boolean) {
         RUNNING = false;
     }
 }
-
-
-
 
 
 const job = new CronJob(

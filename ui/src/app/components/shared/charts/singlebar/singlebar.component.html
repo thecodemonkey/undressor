@@ -1,5 +1,5 @@
 <div class="bar">
-    <span *ngFor="let i of data" [style.width.%]="i.ratio">{{ i.value }}</span>
+    <span *ngFor="let i of data" [style.width.%]="i.ratio">{{ i.value | humanize }}</span>
 </div>
 <div class="labels">
     <ng-container *ngFor="let i of data">
