@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "cd dist/ui && http-server --cors -d false",
-    "build": "ng build",
+    "build": "ng build --configuration=production --build-optimizer",
     "postinstall": "npm i http-server -g",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
