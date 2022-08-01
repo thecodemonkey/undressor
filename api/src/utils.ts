@@ -25,6 +25,7 @@ async function urlUrlToBuffer(url: string, options: { width: number, height:numb
 
 
     console.log(`PUPPETEER: call url: ${url}`);
+    await page.setDefaultNavigationTimeout(120000);
     await page.goto(url, { waitUntil: ["load","networkidle0"]  });
 
 
