@@ -29,6 +29,8 @@ const cached = async (key:string, clbk: () => any) => {
 const callservice = async (req:any, res:any, key:string, clbk: (tname:string) => any) => {
   const twittername = decrypt(req.params.enctwittername);
 
+  console.log(`tname - enc: ${req.params.enctwittername}| dec: ${twittername}`)
+
   res.json(
     await cached(`${key}-${twittername}`,
       async () => {
@@ -96,7 +98,7 @@ app.get('/insights/:enctwittername', async (req, res) => {
 
 
 app.get('/alive', async (req, res) => {
-  res.status(200).send();
+  res.status(200).send('hello');
 });
 
 app.listen(port, () => {
