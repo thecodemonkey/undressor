@@ -28,19 +28,19 @@ export class ApiService {
   }  
 
   getHashtags(userId: string) {
-    return this.http.get<DataValue[]>(`${environment.apiUrl}profile/${userId}/hashtags`);
+    return this.http.get<any>(`${environment.apiUrl}profile/${userId}/hashtags`);
   }    
 
   getWeeklyUsage(userId: string) {
-    return this.http.get<DataMatrixCell[]>(`${environment.apiUrl}profile/${userId}/weekly`);
+    return this.http.get<{tname:string, result:DataMatrixCell[]}>(`${environment.apiUrl}profile/${userId}/weekly`);
   }
 
   getActivity(userId: string) {
-    return this.http.get<any[]>(`${environment.apiUrl}${userId}/activity`);
+    return this.http.get<any>(`${environment.apiUrl}${userId}/activity`);
   }
 
   getProfileBasics(userId: string) {
-    return this.http.get<DataValue[]>(`${environment.apiUrl}profile/${userId}/basics`);
+    return this.http.get<any>(`${environment.apiUrl}profile/${userId}/basics`);
   }
 
   getLinkAnalysis(tweetId: string) {

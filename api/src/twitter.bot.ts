@@ -4,7 +4,7 @@ import moment from 'moment';
 import { TweetV2 } from 'twitter-api-v2';
 import * as db from './db';
 import * as tclient from './twitter.service';
-import { imageUrlToBuffer, rnd, save, urlUrlToBuffer } from './utils';
+import { encrypt, imageUrlToBuffer, rnd, save, urlUrlToBuffer } from './utils';
 
 enum Command {
     LINK,
@@ -44,22 +44,23 @@ async function processAnswer(mention:TweetV2, dryRun?:boolean) {
 
         if (!dryRun) await db.updateLastMention(mention);
 
-
         // get author of original tweet. if mention is not inside reply, use author_id of the guy who asked undressor.
         const ogAuthorId = mention.in_reply_to_user_id || mention.author_id;
         const ogTweetId = mention.referenced_tweets? mention.referenced_tweets[0].id : mention.id; // '1547870812245331969'; //'1548686102457946113';
+        const enctweetid = encrypt(ogTweetId);
 
         const user = await tclient.getUserById(ogAuthorId);
         const username = user.username;
+        const enctname = encrypt(username);
 
         const cmd = (mention.text.indexOf('link') > -1)? Command.LINK : Command.DEFAULT;
         console.log(`reply to: ${username} | cmd: ${cmd} | ogTweetId: ${ogTweetId}`);
 
         // generate images...
         const imageBuffers = await Promise.all(
-            getImages(cmd, username, ogTweetId)
+            getImages(cmd, enctname, enctweetid)
                     .map(u => urlUrlToBuffer(u.url, u.options, 5000))
-         );
+        );
 
         console.log(`images loaded ${imageBuffers.length}`);
 
@@ -69,7 +70,7 @@ async function processAnswer(mention:TweetV2, dryRun?:boolean) {
              console.log('DRY RUN: images created.');
         }
         // generate images end.
-        const url = `${process.env.BASE_URL}#/insights/${username}`;
+        const url = `${process.env.BASE_URL}#/insights/${enctname}`;
 
         await tclient.reply(`who is @${username}? \r\n\r\nmore insights » ${url} \r\n`, mention.id, imageBuffers, dryRun );
         // tclient.reply(`reply 2... ${url}`, lastmention.id, imageBuffers);

@@ -30,10 +30,10 @@
         <span>{{profile.location}}</span>
     </div>
     <div class="follower">
-        <app-singlebar [data]="profile.flollower"></app-singlebar>
+        <app-singlebar [data]="profile?.flollower || []"></app-singlebar>
     </div>
     <div class="tweets">
-        <app-singlebar [data]="profile.tweets"></app-singlebar>
+        <app-singlebar [data]="profile?.tweets || []"></app-singlebar>
     </div>
     <div class="exp"> 
         <!-- on twitter for<br/>  -->

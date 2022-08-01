@@ -1,9 +1,6 @@
 import * as twitter from './twitter.service';
-import { imageUrlToBuffer, normalizeHashtags, printJSON, rnd, save, urlUrlToBuffer,  } from './utils'
-import fs from 'fs';
-import { initClient  } from './twitter.config';
-import { Tweetv2SearchParams } from 'twitter-api-v2';
-import { normalizeAnnotations, normalizeDomains, normalizeEntities } from './twitter.service';
+import { decrypt, encrypt, rnd, save, urlUrlToBuffer,  } from './utils'
+
 
 async function generateImages(twittername: string) {
     const landscape =  { width: 1200, height: 675 }
@@ -42,9 +39,17 @@ async function start() {
     // const tweet = await twitter.getTweet('1548579806484504576');
     // printJSON('TWEET', tweet);
 
-    const whois = await twitter.whois('iljaleyberman.com');
-    printJSON('WHOIS', whois);
+    // const whois = await twitter.whois('iljaleyberman.com');
+    // printJSON('WHOIS', whois);
 
+    // musk: 3b7a1689595c3ffc|
+    // chillya: 3d7e108b58502d
+
+    // tweet: 6f234cd40c1d7ba5be1d29eec6981af56bf0a9
+    const encrypted = encrypt('1553847218507063296');
+    const decrypted = decrypt(encrypted);
+
+    console.log(`enc: ${encrypted}| dec: ${decrypted}`)
 
     // const imageBuffers = await generateImages(username);
     // // await saveImages(imageBuffers);

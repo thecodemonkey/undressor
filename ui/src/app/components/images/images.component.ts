@@ -19,13 +19,13 @@ export class ImagesComponent implements OnInit {
 
   linkDomains$ : Observable<any[]> = of ([]);
 
-  dataActivity$: Observable<any[]> = of([]);
+  dataActivity$: Observable<any> = of();
 
-  data$: Observable<DataValue[]> = of([{title:'', value:0}]);
-  data2$: Observable<DataValue[]> = of([{title:'', value:0}]);
+  data$: Observable<any> = of();
+  data2$: Observable<any> = of();
   tweetsTitle = 'activity / 24h';
 
-  dataWeekly$: Observable<DataMatrixCell[]> = of([{x:0, y:0, r:0}]);
+  dataWeekly$: Observable<{tname?:string, result:DataMatrixCell[]}> = of({result:[{x:0, y:0, r:0}]});
 
 
   data: DataValue[] = [{ title: 'a', value: 0}]; //[{ title: 'follower', value: 20}, { title: 'followed', value: 550}, { title: '', value: 0}];
@@ -55,11 +55,15 @@ export class ImagesComponent implements OnInit {
         break;
       case 'hashtags':
         this.data$ = this.api.getHashtags(this.userId);
-        this.title = `what topics is <strong>@${this.userId}</strong> interested in?`;
+        this.data$.subscribe((d:any) => {
+          this.title = `what topics is <strong>@${d.tname}</strong> interested in?`;
+        })       
         break;
       case 'weekly':
         this.dataWeekly$ = this.api.getWeeklyUsage(this.userId);
-        this.title = `when does <strong>@${this.userId}</strong> tweet most often?`;
+        this.dataWeekly$.subscribe(d => {
+          this.title = `when does <strong>@${d.tname}</strong> tweet most often?`;
+        });
         break;
       case 'basics':
         this.data$ = this.api.getProfileBasics(this.userId)               
@@ -73,6 +77,11 @@ export class ImagesComponent implements OnInit {
         this.data2$ = this.api.getProfileBasics(this.userId)
           .pipe(tap((d:any) => {
             this.tweetsTitle = `${this.tweetsTitle}<br/><span class="digit" style="font-size:3.4rem">${humanize.compactInteger(d.tweet_count + d.reply_count + d.likes_count)}</span>`;
+
+            this.title = `how popular is <strong>@${d.tname}</strong>?`; 
+            this.title2 = `how much has <strong>@${d.tname}</strong> tweeted in the last 24 hours?`;
+    
+
           }))
           .pipe(map((d:any) => [
             { title: 'tweets', value: d.tweet_count}, 
@@ -81,14 +90,16 @@ export class ImagesComponent implements OnInit {
           ])
         )       
 
-        this.title = `how popular is <strong>@${this.userId}</strong>?`; 
-        this.title2 = `how much has <strong>@${this.userId}</strong> tweeted in the last 24 hours?`;
 
         break;
 
       case 'activity':
         this.dataActivity$ = this.api.getActivity(this.userId);
-        this.title = `how do the tweets from <strong>@${this.userId}</strong> look like? `;
+        this.dataActivity$.subscribe(d => {
+          this.title = `how do the tweets from <strong>@${d.tname}</strong> look like? `;
+        });
+
+        
         break;
       case 'link-domains':
         this.linkDomains$ = this.api.getLinkAnalysis(this.userId)

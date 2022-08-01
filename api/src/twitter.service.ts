@@ -138,7 +138,7 @@ async function getLikesCounts24h(tclient: TwitterApiReadOnly, userid:string) {
                             .filter(d => d.age < 1);
 }
 
-async function getWeeklyCounts(userid: string) {
+async function getWeeklyCounts(twittername: string) {
     const tclient = initROClient();
     const generateMatrix = () => {
         const matrix:{x:number, y:number, r: number}[] = [];
@@ -166,7 +166,7 @@ async function getWeeklyCounts(userid: string) {
     // printJSON('USER', user);
 
 
-    const counts = await tclient.v2.tweetCountRecent(`from:${userid}`, {
+    const counts = await tclient.v2.tweetCountRecent(`from:${twittername}`, {
         // start_time:  start,
         // end_time: end,
         granularity: 'hour'
@@ -186,7 +186,10 @@ async function getWeeklyCounts(userid: string) {
 
 
 
-    return result;
+    return {
+        tname: twittername,
+        result
+    };
 }
 
 async function getBasics(twittername: string) {
@@ -216,6 +219,7 @@ async function getBasics(twittername: string) {
         reply_count: repliesCnt.meta.total_tweet_count,
         mention_count: mentions.meta.total_tweet_count,
         likes_count: likes.length,
+        tname: twittername
     };
 }
 
@@ -314,11 +318,16 @@ async function getHashtags(twittername:string) {
 
         const result = normalizeHashtags((ht || []).concat(ht2));
 
+
+
         console.log('hastags:', result);
 
         // printJSON('HASHTAGS', hastags)
 
-        return result;
+        return {
+            tname: twittername,
+            hashtags: result
+        };
     } catch(e) {
         console.error('error occured', e);
     }
@@ -382,7 +391,10 @@ async function getActivity(twittername: string) : Promise<any> {
     // printJSON('COUNTS: ', tweetsCnt);
     // printJSON('RESULT: ', result);
 
-    return result;
+    return {
+        tname: twittername,
+        result
+    };
 }
 
 async function reply(text: string, tweetid: string, images?:Buffer[], dryRun?:boolean) {

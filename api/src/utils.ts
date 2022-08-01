@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 import puppeteer from 'puppeteer';
 import fs from 'fs';
+import crypto from 'crypto'
 
 
 function sleep(ms: number) {
@@ -87,4 +88,33 @@ function printJSON(text:string, obj: any){
     console.log(`JSON VALUE of ${text}: \n\n ${JSON.stringify(obj, null, 4)} \n`);
 }
 
-export { imageUrlToBuffer, urlUrlToBuffer, sleep, save, rnd, normalizeHashtags, printJSON }
+function getBytes(value: string) : Buffer {
+    const bytes = [];
+    for (let i = 0; i < value.length; i++) {
+        bytes.push(value.charCodeAt(i));
+    }
+
+    return Buffer.from(bytes);
+};
+
+
+function encrypt(plainValue: string): string {
+    const iv = getBytes(process.env.ENCRYPTION_IV)
+    const cipher = crypto.createCipheriv('aes-256-ctr', process.env.ENCRYPTION_KEY, iv);
+
+    const encrypted = Buffer.concat([cipher.update(plainValue), cipher.final()]);
+    return `${encrypted.toString('hex')}`;
+}
+
+function decrypt(hexValue: string) {
+    const iv = getBytes(process.env.ENCRYPTION_IV)
+    const decipher = crypto.createDecipheriv('aes-256-ctr', process.env.ENCRYPTION_KEY, iv);
+
+    const decrpyted = Buffer.concat(
+        [decipher.update(Buffer.from(hexValue, 'hex')), decipher.final()]);
+
+    return decrpyted.toString();
+}
+
+
+export { imageUrlToBuffer, urlUrlToBuffer, sleep, save, rnd, normalizeHashtags, printJSON, encrypt, decrypt }

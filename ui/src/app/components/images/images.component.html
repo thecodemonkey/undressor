@@ -9,11 +9,11 @@
         <app-ring *ngIf="data2$ | async as da" [datavalues]="da" [title]="tweetsTitle"></app-ring>
     </div>    
 
-    <app-tagcloud *ngIf="id == 'hashtags' && (data$ | async) as da" [datavalues]="da"></app-tagcloud>
-    <app-heatmap *ngIf="id == 'weekly' && (dataWeekly$ | async) as da" [datavalues]="da"></app-heatmap>
+    <app-tagcloud *ngIf="id == 'hashtags' && (data$ | async) as da" [datavalues]="da.hashtags"></app-tagcloud>
+    <app-heatmap *ngIf="id == 'weekly' && (dataWeekly$ | async) as da" [datavalues]="da.result"></app-heatmap>
 
     <app-linearea [datavalues]="dsInterests" *ngIf="id == 'line'"></app-linearea>
-    <app-bar *ngIf="id == 'activity' && (dataActivity$ | async) as da" [datavalues]="da" ></app-bar>
+    <app-bar *ngIf="id == 'activity' && (dataActivity$ | async) as da" [datavalues]="da.result" ></app-bar>
 
     <!-- <app-radar [datavalues]="dsInterests" *ngIf="id == 'radar'"></app-radar> -->
     <app-radar *ngIf="id == 'link-domains' && (linkDomains$ | async) as da" [datavalues]="da"></app-radar>

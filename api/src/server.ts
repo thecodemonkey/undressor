@@ -2,7 +2,7 @@ import express, { NextFunction } from 'express'
 import cors from 'cors'
 import * as twitter from './twitter.service'
 import NodeCache from 'node-cache' ;
-import { printJSON } from './utils';
+import { printJSON, decrypt } from './utils';
 const cache = new NodeCache({ stdTTL: 0} );
 
 const app = express();
@@ -26,100 +26,78 @@ const cached = async (key:string, clbk: () => any) => {
   return item;
 }
 
-
-app.get('/:tweetid/link', async (req, res) => {
-
-  let result = cache.get(`link-${req.params.tweetid}`);
-
-  if (!result) {
-    result = await twitter.analyseLink(req.params.tweetid);
-    cache.set(`link-${req.params.tweetid}`, result);
-  }
-
-  res.json( result);
-});
-
-app.get('/profile/:userid/basics', async (req, res) => {
-
-  let profile = cache.get(`basic-${req.params.userid}`);
-
-  if (!profile) {
-    profile = await twitter.getBasics(req.params.userid);
-    cache.set(`basic-${req.params.userid}`, profile);
-  }
-
-
-  res.json( profile);
-});
-
-app.get('/profile/:userid/interests', async (req, res) => {
-  const profile = await twitter.getInterests(req.params.userid);
-  res.json( profile);
-});
-
-app.get('/profile/:userid/hashtags', async (req, res) => {
-
-  let hashtags = cache.get(`hashtags-${req.params.userid}`);
-
-  if (!hashtags) {
-    hashtags = await twitter.getHashtags(req.params.userid);
-    cache.set(`hashtags-${req.params.userid}`, hashtags);
-  }
-
-  res.json( hashtags);
-});
-
-app.get('/profile/:userid/weekly', async (req, res) => {
-  let counts = cache.get(`counts-${req.params.userid}`);
-
-  if (!counts) {
-    counts = await twitter.getWeeklyCounts(req.params.userid);
-    cache.set(`counts-${req.params.userid}`, counts);
-  }
-
-  res.json( counts );
-});
-
-
-app.get('/:userid/activity', async (req, res) => {
+const callservice = async (req:any, res:any, key:string, clbk: (tname:string) => any) => {
+  const twittername = decrypt(req.params.enctwittername);
 
   res.json(
-    await cached(`activity-${req.params.userid}`,
+    await cached(`${key}-${twittername}`,
       async () => {
-        return await twitter.getActivity(req.params.userid);
+        return await clbk(twittername);
+    })
+  );
+
+}
+
+
+app.get('/:enctweetid/link', async (req, res) => {
+  const tweetid = decrypt(req.params.enctweetid);
+
+  res.json(
+    await cached(`link-${tweetid}`,
+      async () => {
+        return await twitter.analyseLink(tweetid);
     })
   );
 });
 
-app.get('/profile/:twittername', async (req, res) => {
-  let result = cache.get(`profile-${req.params.twittername}`);
-
-  if (!result) {
-    result = await twitter.getProfile(req.params.twittername);
-    cache.set(`profile-${req.params.twittername}`, result);
-  }
-
-  res.json( result);
+app.get('/profile/:enctwittername/basics', async (req, res) => {
+  await callservice(req, res, 'basic', async (tname) =>
+    await twitter.getBasics(tname)
+  );
 });
 
-app.get('/insights/:twittername', async (req, res) => {
-  let result = cache.get(`insights-${req.params.twittername}`);
+app.get('/profile/:enctwittername/interests', async (req, res) => {
+  await callservice(req, res, 'interests', async (tname) =>
+    await twitter.getInterests(tname)
+  );
 
-  if (!result) {
-    result = await twitter.getInsights(req.params.twittername);
-    cache.set(`insights-${req.params.twittername}`, result);
-  }
-
-  res.json( result);
 });
+
+app.get('/profile/:enctwittername/hashtags', async (req, res) => {
+  await callservice(req, res, 'hashtags', async (tname) =>
+    await twitter.getHashtags(tname)
+  );
+});
+
+app.get('/profile/:enctwittername/weekly', async (req, res) => {
+  await callservice(req, res, 'weekly', async (tname) =>
+    await twitter.getWeeklyCounts(tname)
+  );
+});
+
+
+app.get('/:enctwittername/activity', async (req, res) => {
+  await callservice(req, res, 'activity', async (tname) =>
+    await twitter.getActivity(tname)
+  );
+});
+
+app.get('/profile/:enctwittername', async (req, res) => {
+  await callservice(req, res, 'profile', async (tname) =>
+    await twitter.getProfile(tname)
+  );
+});
+
+app.get('/insights/:enctwittername', async (req, res) => {
+  await callservice(req, res, 'insights', async (tname) =>
+    await twitter.getInsights(tname)
+  );
+});
+
 
 app.get('/alive', async (req, res) => {
   res.status(200).send();
 });
-
-
-
-
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
