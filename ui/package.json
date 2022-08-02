@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "cd dist/ui && http-server --cors -d false",
-    "build": "ng build --configuration=production --build-optimizer",
+    "build": "ng build --configuration=production",
     "postinstall": "npm i http-server -g",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "start:local": "ng serve --host 192.168.0.148"
+    "start:local": "ng serve --host 192.168.0.148",
+    "build:docker": "ng build --configuration=docker"
   },
   "private": true,
   "dependencies": {

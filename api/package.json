@@ -8,7 +8,8 @@
     "build": "tsc",
     "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bot": "npm run build && node ./dist/twitter.bot.js"
+    "bot": "npm run build && node ./dist/twitter.bot.js",
+    "start:bot": "node ./dist/twitter.bot.js"
   },
   "repository": {
     "type": "git",
