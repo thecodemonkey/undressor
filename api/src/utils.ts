@@ -66,8 +66,14 @@ async function urlUrlToBuffer(url: string, options: { width: number, height:numb
         console.log('PUPPETEER: error while navigate', e);
     }
     finally {
-        if (browser && options.headless)
+        if (browser && options.headless){
+            console.log('PUPPETEER: close browser.');
             await browser.close();
+        }
+        else
+        {
+            console.log('PUPPETEER: DONT close browser!');
+        }
     }
 }
 

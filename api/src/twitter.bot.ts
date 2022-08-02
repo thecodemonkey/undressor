@@ -40,10 +40,6 @@ const getImages = (cmd: Command, username: string, tweetId?: string ) => {
 
 async function processAnswer(mention:TweetV2, dryRun?:boolean) {
     if (mention) {
-        console.log('persist lastmention...', mention);
-
-        if (!dryRun) await db.updateLastMention(mention);
-
         // get author of original tweet. if mention is not inside reply, use author_id of the guy who asked undressor.
         const ogAuthorId = mention.in_reply_to_user_id || mention.author_id;
         const ogTweetId = mention.referenced_tweets? mention.referenced_tweets[0].id : mention.id; // '1547870812245331969'; //'1548686102457946113';
@@ -57,10 +53,18 @@ async function processAnswer(mention:TweetV2, dryRun?:boolean) {
         console.log(`reply to: ${username} | cmd: ${cmd} | ogTweetId: ${ogTweetId}`);
 
         // generate images...
-        const imageBuffers = await Promise.all(
-            getImages(cmd, enctname, enctweetid)
-                    .map(u => urlUrlToBuffer(u.url, u.options, 5000))
-        );
+        const imageBuffers:Buffer[] = [];
+        const imgs:any[] = getImages(cmd, enctname, enctweetid);
+
+        for(const i of imgs) {
+            const b = await urlUrlToBuffer(i.url, i.options, 5000);
+            imageBuffers.push(b);
+        }
+
+        // const imageBuffers = await Promise.all(
+        //     getImages(cmd, enctname, enctweetid)
+        //             .map(u => urlUrlToBuffer(u.url, u.options, 5000))
+        // );
 
         console.log(`images loaded ${imageBuffers.length}`);
 
@@ -74,6 +78,12 @@ async function processAnswer(mention:TweetV2, dryRun?:boolean) {
 
         await tclient.reply(`who is @${username}? \r\n\r\nmore insights » ${url} \r\n`, mention.id, imageBuffers, dryRun );
         // tclient.reply(`reply 2... ${url}`, lastmention.id, imageBuffers);
+
+
+        if (!dryRun) {
+            console.log('persist lastmention...', mention);
+            await db.updateLastMention(mention);
+        }
     }
 }
 
