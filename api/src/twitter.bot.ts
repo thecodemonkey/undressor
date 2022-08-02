@@ -1,9 +1,9 @@
 import console from 'console';
-import { CronJob } from 'cron';   
-import moment from 'moment';         
+import { CronJob } from 'cron';
+import moment from 'moment';
 import { TweetV2 } from 'twitter-api-v2';
-import * as db from './db';                 
-import * as tclient from './twitter.service';           
+import * as db from './db';
+import * as tclient from './twitter.service';
 import { encrypt, imageUrlToBuffer, rnd, save, urlUrlToBuffer } from './utils';
 
 enum Command {

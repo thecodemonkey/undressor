@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import puppeteer from 'puppeteer';
+import puppeteer, { Browser } from 'puppeteer';
 import fs from 'fs';
 import crypto from 'crypto'
 
@@ -16,57 +16,59 @@ async function imageUrlToBuffer(url: string) : Promise<Buffer> {
 
 
 async function urlUrlToBuffer(url: string, options: { width: number, height:number, convertCanvas2Image?:boolean, headless?:boolean}, wait: number = 3000) : Promise<Buffer> {
+    let browser:Browser = null;
 
+    try {
+        browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox', '--font-render-hinting=none' ], headless: options.headless});
 
-    const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox', '--font-render-hinting=none' ], headless: options.headless});
-    const page = await browser.newPage();
-    page.setViewport({ width: options.width, height: options.height, deviceScaleFactor: 2})
-    await page.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36");
+        const page = await browser.newPage();
+        page.setViewport({ width: options.width, height: options.height, deviceScaleFactor: 2})
+        await page.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36");
 
+        console.log(`PUPPETEER: call url: ${url}`);
+        await page.setDefaultNavigationTimeout(120000);
+        await page.goto(url, { waitUntil: ["load","networkidle0"]  });
 
-    console.log(`PUPPETEER: call url: ${url}`);
-    await page.setDefaultNavigationTimeout(120000);
-    await page.goto(url, { waitUntil: ["load","networkidle0"]  });
+        if (wait > 0) await sleep(wait);
 
+        console.log(`PUPPETEER: call url done.`);
 
-    if (wait > 0) await sleep(wait);
+        if (options.convertCanvas2Image) {
+            // const myFont = new FontFace('Jura', 'url(https://fonts.googleapis.com/css2?family=Jura:wght@300;400;600&display=swap)');
+            // const font = await myFont.load();
 
-    console.log(`PUPPETEER: call url done.`);
+            await page.evaluate(() => {
+                function canvasToImage(element: HTMLCanvasElement) {
+                    // document.fonts.add(font);
+                    const dataUrl = element.toDataURL();
+                    const i = document.createElement('img');
+                    i.src = dataUrl;
 
-    if (options.convertCanvas2Image) {
-        // const myFont = new FontFace('Jura', 'url(https://fonts.googleapis.com/css2?family=Jura:wght@300;400;600&display=swap)');
-        // const font = await myFont.load();
+                    const properties = ['width', 'height', 'position', 'left', 'top'] as const;
+                    properties.forEach(key => i.style[key] = element.style[key])
+                    i.className = element.className;
 
-        await page.evaluate(() => {
-            function canvasToImage(element: HTMLCanvasElement) {
-                // document.fonts.add(font);
-                const dataUrl = element.toDataURL();
-                const i = document.createElement('img');
-                i.src = dataUrl;
+                    element.parentNode?.insertBefore(i, element);
+                    element.parentNode?.removeChild(element);
+                }
 
-                const properties = ['width', 'height', 'position', 'left', 'top'] as const;
-                properties.forEach(key => i.style[key] = element.style[key])
-                i.className = element.className;
+                [].forEach.call(document.getElementsByTagName('canvas'), canvasToImage)
+            })
+        }
 
-                element.parentNode?.insertBefore(i, element);
-                element.parentNode?.removeChild(element);
-            }
+        console.log(`PUPPETEER: take screenshot.`);
+        const image = await page.screenshot({type: 'png'});
 
+        console.log(`PUPPETEER: return buffer ${ image.length }.`);
+        return image as Buffer;
 
-
-
-            [].forEach.call(document.getElementsByTagName('canvas'), canvasToImage)
-        })
+    } catch(e) {
+        console.log('PUPPETEER: error while navigate', e);
     }
-
-    console.log(`PUPPETEER: take screenshot.`);
-    const image = await page.screenshot({type: 'png'});
-
-    if (options.headless)
-        await browser.close();
-
-    console.log(`PUPPETEER: return buffer ${ image.length }.`);
-    return image as Buffer;
+    finally {
+        if (browser && options.headless)
+            await browser.close();
+    }
 }
 
 async function save(path: string, buffer:Buffer) {
