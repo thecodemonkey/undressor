@@ -119,7 +119,95 @@ If you are a developer and are interested in the open source solution, then you 
 
 ### getting started
 
-xxx
+1. get project sources from git
+
+    ```bash
+    git clone https://github.com/thecodemonkey/undressor.git
+    ```    
+
+2. build and run ui
+
+    ```bash
+    cd ui
+    npm i
+    ng serve
+    ```    
+3. open ui in browser http://localhost:4200
+4. build api
+    
+    ```bash
+    cd api
+    npm i
+    npm run build
+    ```    
+5. configure environment variables
+    
+    ```bash
+    #create .env file in the root of api directory
+    # this file contains secretes, and is included in the .gitignore
+
+    touch .env 
+    ```
+
+    Add these variables to the .env file:
+
+    ```bash
+    
+    #rest api port
+    PORT=3000                     
+
+    # To use the Twitter API, the first thing you need is a Twitter developer account. Create Twitter account under https://developer.twitter.com/ and transfer all necessary secrets into the corresponding variables:
+
+    #twitter api app key 
+    APP_KEY=xxx                   
+    #twitter api app secret
+    APP_SECRET=xxx                
+    #twitter api access token
+    ACCESS_TOKEN=xxx              
+    #twitter api access secret
+    ACCESS_SECRET=xxx             
+
+    #twitter api bearer token  
+    BEARER_TOKEN=xxx              
+
+    #twitter username of a bot account
+    TWITTER_NAME=undressor        
+
+    #connection string postgresdb
+    DATABASE_URL=[DB_CONN_STR]
+
+    #polling interval for the bot
+    BOT_POLLING_INTERVAL=10
+    #enables/disables the bot
+    BOT_ON=true
+    #enables/disables the dry run of the bot
+    #dry run do analysis, save images locally and do not make real tweets
+    BOT_DRY_RUN=false
+
+    #base url to generate url for the reply
+    BASE_URL="http://localhost:4200/"
+    #base url to generate images
+    BASE_IMAGE_URL="http://localhost:4200/"
+
+
+    #16 bit encryption vector
+    ENCRYPTION_IV=bC434Umzlk3Tra1I
+    #encryption key
+    ENCRYPTION_KEY=abC5pumlZR39g91RyRm94bOaPi1zLr0I
+    ```
+
+6. run api
+   
+    ```bash
+    npm run start
+    ```   
+
+7. run bot
+   
+    ```bash
+    npm run bot
+    ```
+
 
 <br/><br/>
 
@@ -131,7 +219,27 @@ xxx
 
 ### project structure
 
-xxx
+This repository consists of 2 separate code bases:
+
+1. UI/Frontend
+2. Backend (BOT + REST API)
+
+
+<pre>
+
+ undressor
+   ║
+   ╠═ .github/workflows  (gh action)
+   ║
+   ╠═ docs               (docs/imgs)
+   ║      
+   ╠═ ui                 (UI/Angular Project)
+   ║
+   ╚═ api                (REST API/BOT Node/Typescript project)
+
+</pre>
+
+To load the project in an IDE, please do not use the root directory, but the respective subdirectory [ui](ui) or [api](api)!
 
 <br/><br/>
 
