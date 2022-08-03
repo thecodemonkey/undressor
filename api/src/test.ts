@@ -42,11 +42,12 @@ async function start() {
     // const whois = await twitter.whois('iljaleyberman.com');
     // printJSON('WHOIS', whois);
 
-    // musk: 3b7a1689595c3ffc|
+    // musk: 3b7a1689595c3ffc
     // chillya: 3d7e108b58502d
+    // undressor: 2b781d95515a3ff8fd
 
     // tweet: 6f234cd40c1d7ba5be1d29eec6981af56bf0a9
-    const encrypted = encrypt('1553847218507063296');
+    const encrypted = encrypt('undressor');
     const decrypted = decrypt(encrypted);
 
     console.log(`enc: ${encrypted}| dec: ${decrypted}`)

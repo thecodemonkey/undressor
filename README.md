@@ -10,12 +10,14 @@ This project was created during the Twitter Hackathon
 <br/><br/>
 
 - [motivation](#motivation)
+- [purpose](#purpose)
 - [what exactly is undressor](#what-exactly-is-undressor)  
 - [usage](#usage)
 - [development](#development)
     - [getting started](#getting-started)
+    - [running in docker](#running-in-docker)       
+    - [project structure](#project-structure)
     - [architecture](#architecture)
-    - [running in docker](#running-in-docker)   
 - [license](#license)
 
 <br/><br/>
@@ -43,28 +45,91 @@ Undressor does not judge, it just makes the hidden information visible and under
 
 <br/><br/>
 
+## purpose
+
+We asked ourselves what current challenges the Twitter developer community is dealing with. To do this, we  researched various ranking lists of the best Twitter bots. Here are some of those sources:
+
+- https://beebom.com/best-twitter-bots/
+- https://increditools.com/twitter-bots/
+- https://techpp.com/2021/12/10/best-twitter-bots/
+- https://gist.github.com/derhuerst/1cb20598b692aa87d9bb
+
+There you can find many bots and solutions that help to get more reach. Among the TOP 10 are also bots like: @year_progress, @emojimashupbot, or also @StupidCounter. We think that the social impact of these bots is not very big.
+
+We haven't found a single solution that addresses truly real-world challenges. Issues like: Hate Speech, Propaganda, Manipulation, Radicalization of society or even Digital Detox are not addressed at all. These are real problems that everyone should be aware of by now. 
+
+Why are such issues not being addressed? Why does the Twitter community celebrate a bot that tweets a year's progress in ASCII characters every day? This is absolutely meaningless in our eyes. 
+
+Our call to the developer community is: 
+
+> Let's look together at what really MATTERS!
+
+<br/><br/>
+
 
 ## what exactly is undressor
 
-xxx
+This project consists of 2 separate solutions:
+
+1. the Twitter BOT
+2. the online portal
+
+<br/><br/>
+
+<img src="docs/img/twitter-conversation.png" width="400">
+
+The Twitter BOT provides a seamless user experience. Users can request the bot via @undressor and gets a reply directly without leaving Twitter. This is very convenient. However, the information content that is tweeted back by the bot in the form of images is still very limited. 
+
+<br/><br/>
+<img src="docs/img/portal-insights.png">
+
+
+In order to provide the user with further detailed information, the online portal(https://undressor-ui.herokuapp.com/) was also developed. In addition to the charts, easy-to-read texts are also provided there. The textual content is intended to tell a story, which at the same time is to be supported by graphically prepared charts. 
+
+<br/><br/>
+
+<img src="docs/img/portal-home.png" >
+
+In addition, the portal offers the possibility to directly analyze different Twitter accounts without affecting an ongoing thread in Twitter. 
+
+<br/><br/>
+
+<img src="docs/img/portal-dashboard.png">
+
+A dashboard with many more interesting insights is also planned for the future.
+
 
 <br/><br/>
 
 ## usage
 
-You can mention the bot in any reply via @undressor. The bot then analyzes the accounts of the author of the original posts, visualizes the corresponding data and tweets the analysis back as set of images.
+You can mention the bot in any Twitter reply via @undressor. The bot then analyzes the account of the author of the original post, visualizes the corresponding data and tweets the analysis back as set of 4 images.
+
+The post also includes a link to the online portal. There you can get more information about the account. 
 
 <br/><br/>
 
 
 ## development
 
-xxx
+If you are a developer and are interested in the open source solution, then you will find here all the information you need to get the project running locally.
 
 <br/><br/>
 
 
 ### getting started
+
+xxx
+
+<br/><br/>
+
+### running in docker
+
+xxx
+
+<br/><br/>
+
+### project structure
 
 xxx
 
@@ -76,11 +141,6 @@ xxx
 
 <br/><br/>
 
-### running in docker
-
-xxx
-
-<br/><br/>
 
 ## license
 
