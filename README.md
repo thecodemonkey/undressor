@@ -248,7 +248,7 @@ To load the project in an IDE, please do not use the root directory, but the res
 
 ### architecture
 
-Undressor verwendet vor allem die Twitter Infrastruktur, bestehend aus der eigentlichen Twitter App und der entsprechenden Twitter API. 
+Undressor primarily uses the Twitter infrastructure, consisting of the actual Twitter app and the corresponding Twitter API. 
 
 <img src="docs/img/architecture.png">
 
