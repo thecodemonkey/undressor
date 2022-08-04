@@ -112,7 +112,7 @@ The post also includes a link to the online portal. There you can get more infor
 
 ## development
 
-If you are a developer and are interested in the open source solution, then you will find here all the information you need to get the project running locally.
+If you are a developer and are interested in this open source solution, then you will find here all the information you need to get the project running locally.
 
 <br/><br/>
 
@@ -156,7 +156,10 @@ If you are a developer and are interested in the open source solution, then you 
     #rest api port
     PORT=3000                     
 
-    # To use the Twitter API, the first thing you need is a Twitter developer account. Create Twitter account under https://developer.twitter.com/ and transfer all necessary secrets into the corresponding variables:
+    # To use the Twitter API, the first thing you need is a Twitter
+    # developer account. Create Twitter account under 
+    # https://developer.twitter.com/ and transfer all necessary 
+    # secrets into the corresponding variables:
 
     #twitter api app key 
     APP_KEY=xxx                   
@@ -173,7 +176,7 @@ If you are a developer and are interested in the open source solution, then you 
     #twitter username of a bot account
     TWITTER_NAME=undressor        
 
-    #connection string postgresdb
+    #connection string of postgresdb
     DATABASE_URL=[DB_CONN_STR]
 
     #polling interval for the bot
@@ -245,7 +248,23 @@ To load the project in an IDE, please do not use the root directory, but the res
 
 ### architecture
 
-xxx
+Undressor verwendet vor allem die Twitter Infrastruktur, bestehend aus der eigentlichen Twitter App und der entsprechenden Twitter API. 
+
+<img src="docs/img/architecture.png">
+
+The solution itself consists of 4 separate runtime components:
+
+1. the Web APP
+2. the REST API
+3. the BOT
+4. and the associated PostgreSQL database
+
+The communication between the Undressor components and the Twitter API is handled by an npm lib "twitter-api-v2".
+
+<br/><br/>
+
+As a result of the analysis, the bot creates several charts in PNG format and tweets them as a reply. The creation of these images works as follows:<br/>
+<img src="docs/img/architecture-process.png">
 
 <br/><br/>
 
