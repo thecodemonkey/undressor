@@ -1,6 +1,6 @@
 FROM node:16
 
-COPY ../api /api
+COPY api /api
 WORKDIR /api
 
 RUN npm i

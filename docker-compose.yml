@@ -3,14 +3,14 @@ services:
   undressor-frontend:
     build:
       context: ./
-      dockerfile: docker/frontend.dockerfile
+      dockerfile: frontend.dockerfile
     image: thecodemonkey/undressor-frontend:latest
     ports:
       - 8080:8080
   undressor-api:
     build:
       context: ./
-      dockerfile: docker/api.dockerfile
+      dockerfile: api.dockerfile
     image: thecodemonkey/undressor-api:latest
     environment:
       PORT: 3000
@@ -19,7 +19,7 @@ services:
   undressor-bot:
     build:
       context: ./
-      dockerfile: docker/bot.dockerfile
+      dockerfile: bot.dockerfile
     image: thecodemonkey/undressor-bot:latest
     ports:
       - 27017:27017

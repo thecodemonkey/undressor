@@ -1,6 +1,6 @@
 FROM node:16
 
-COPY ../api /bot
+COPY api /bot
 WORKDIR /bot
 
 RUN npm i
