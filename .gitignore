@@ -13,3 +13,5 @@ api/dist/twitter.config.js
 api/dist/twitter.config.js.map
 api/dist/twitter.proxy.js
 api/dist/twitter.proxy.js.map
+
+.idea

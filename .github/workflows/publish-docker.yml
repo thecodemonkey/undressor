@@ -1,0 +1,29 @@
+name: publish
+
+on: [push]
+
+jobs:
+  publish-images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build docker images
+        run: |
+          docker build --tag ghcr.io/thecodemonkey/undressor-bot --file ./bot.dockerfile .
+          docker build --tag ghcr.io/thecodemonkey/undressor-api --file ./api.dockerfile .
+          docker build --tag ghcr.io/thecodemonkey/undressor-frontend --file ./frontend.dockerfile .
+      
+      - name: Publish docker images
+        run: |
+          docker push ghcr.io/thecodemonkey/undressor-bot
+          docker push ghcr.io/thecodemonkey/undressor-api
+          docker push ghcr.io/thecodemonkey/undressor-frontend
