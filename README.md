@@ -216,7 +216,37 @@ If you are a developer and are interested in this open source solution, then you
 
 ### running in docker
 
-xxx
+To run the application with docker you first need the `.env` file as described in the [getting started](#getting-started).
+
+The easiest way to start the whole application is by using `docker-compose`.
+To use it you have to define a `docker-compose.yml` with a content like the following:
+
+```yaml
+version: '3'
+services:
+  undressor-frontend:
+    image: ghcr.io/thecodemonkey/undressor-frontend:latest
+    ports:
+      - 8080:8080
+  undressor-api:
+    image: ghcr.io/thecodemonkey/undressor-api:latest
+    env_file: .env
+    ports:
+      - ${PORT}:${PORT}
+  undressor-bot:
+    image: ghcr.io/thecodemonkey/undressor-bot:latest
+    env_file: .env
+    ports:
+      - 27016:27017
+```
+
+The containers can be started by running `docker-compose up`.
+If you want to update the images, because we updated them, you can run those commands:
+
+```sh
+docker-compose up --force-recreate --build -d
+docker image prune -f
+```
 
 <br/><br/>
 
