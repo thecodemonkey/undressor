@@ -19,7 +19,11 @@ async function urlUrlToBuffer(url: string, options: { width: number, height:numb
     let browser:Browser = null;
 
     try {
-        browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox', '--font-render-hinting=none' ], headless: options.headless});
+        browser = await puppeteer.launch({
+          executablePath: process.env.CHROME_EXECUTABLE_PATH ?? undefined,
+          args: ['--no-sandbox', '--disable-setuid-sandbox', '--font-render-hinting=none' ],
+          headless: options.headless
+        });
 
         const page = await browser.newPage();
         page.setViewport({ width: options.width, height: options.height, deviceScaleFactor: 2})
