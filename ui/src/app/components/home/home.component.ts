@@ -21,6 +21,9 @@ export class HomeComponent implements OnInit {
   continous: boolean = false;
   loading: boolean = false;
   unload: boolean = false;
+  encname: String | null | undefined;
+
+  notexists: boolean = false;
 
 
   rnd = (min: number, max: number) => {
@@ -59,20 +62,40 @@ export class HomeComponent implements OnInit {
   }
 
   onSubmit() {
-
+    this.encname = null;
 
     if (!this.loading && this.name) {
       
       (<any> this.fcName).nativeElement.blur();
-
       this.loading = true;
 
-      timer(3000).subscribe(() => {
+
+      this.api.getUser(this.name).subscribe(en => {
+
+        console.log('users name is: ', en);
+
+        if (en !== 'NOT EXISTS') {
+          this.notexists = false;
+          this.encname = en;
+          this.unload = true;
+          this.continous = false;
+          this.closeFaces();
+        } 
+        else 
+        {
+          this.notexists = true;
+        }
+
         this.loading = false;
-        this.unload = true;
-        this.continous = false;
-        this.closeFaces();
-      });
+      })
+
+
+      // timer(3000).subscribe(() => {
+      //   this.loading = false;
+      //   this.unload = true;
+      //   this.continous = false;
+      //   this.closeFaces();
+      // });
     }
   }
 
@@ -120,7 +143,7 @@ export class HomeComponent implements OnInit {
 
   goToInsightsView() {
     // const tname = this.mainForm.getRawValue().name || '';
-    this.router.navigate([`/insights/${this.name}`]);
+    this.router.navigate([`/insights/${this.encname}`]);
   }
 
   onBlur() {
@@ -130,6 +153,10 @@ export class HomeComponent implements OnInit {
     if (this.devices.isMobile()) {
       this.onSubmit();
     }
+  }
+
+  onFocus() {
+    this.notexists = false;
   }
 
   get name() {

@@ -95,6 +95,24 @@
             opacity: .6;
             z-index: 0;
         }
+
+        .err{
+            color: lightsalmon;
+            font-size: .8rem;
+            background: #000;
+            padding: 15px;
+            width: 100%;
+            bottom: 0;
+            position: absolute;
+            opacity: 0;
+            transition: opacity .5s;
+
+            &.on {
+                opacity: 1;
+            }
+        }
+
+
     
         .claim {
             width: 0;

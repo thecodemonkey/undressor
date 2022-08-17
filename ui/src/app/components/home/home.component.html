@@ -8,7 +8,8 @@
     <form [formGroup]="mainForm" (ngSubmit)="onSubmit()">
         <input class="tname" [class.off]="loading || unload" type="text" 
         placeholder="type twitter name without '@' " 
-        formControlName="name" (blur)='onBlur()' #fcname>
+        formControlName="name" (blur)='onBlur()' (focus)="onFocus()" #fcname>
     </form>
+    <span class="err" [class.on]="notexists">twitter name <strong>{{this.name}}</strong> not found.</span>
     <app-loader class="loader" *ngIf="loading"></app-loader>
 </div>

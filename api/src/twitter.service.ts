@@ -1,9 +1,22 @@
 import moment from 'moment';
 import { HomeTimelineV1Paginator, SendTweetV2Params, TweetV2, Tweetv2SearchParams, TwitterApi, TwitterApiReadOnly } from 'twitter-api-v2';
 import { initClient, initOAuth1Client, initROClient } from './twitter.config'
-import { normalizeHashtags, printJSON, rnd } from './utils';
+import { encrypt, normalizeHashtags, printJSON, rnd } from './utils';
 import whoiser from 'whoiser';
 
+async function getUser(username: string) {
+    try
+    {
+        const user = await this.getUserByName(username);
+        console.log('USER: ', user);
+
+        return (!user)? 'NOT EXISTS' : encrypt(username);
+    }
+    catch(e) {
+        console.error('WHILE GET USER: ', e);
+        return 'NOT EXISTS';
+    }
+}
 
 async function getTweet(id: string) {
 
@@ -535,6 +548,7 @@ export {
     normalizeAnnotations,
     normalizeDomains,
     analyseLink,
+    getUser,
     getUserByName,
     getUserById,
     getTweet,

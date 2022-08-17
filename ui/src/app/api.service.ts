@@ -14,6 +14,10 @@ export class ApiService {
   
   constructor(private http: HttpClient) { }
 
+  getUser(userName: string) {
+    return this.http.get<String>(`${environment.apiUrl}user/${userName}`);
+  }
+
   getProfile(userId: string) {
     return this.http.get<Profile>(`${environment.apiUrl}profile/${userId}`);
   }

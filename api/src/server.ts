@@ -40,6 +40,15 @@ const callservice = async (req:any, res:any, key:string, clbk: (tname:string) =>
 
 }
 
+app.get('/user/:username', async (req, res) => {
+
+  res.json(
+    await cached(`user-${req.params.username}`,
+      async () => {
+        return await twitter.getUser(req.params.username);
+    })
+  );
+});
 
 app.get('/:enctweetid/link', async (req, res) => {
   const tweetid = decrypt(req.params.enctweetid);
