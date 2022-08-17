@@ -7,8 +7,7 @@
     "postinstall": "npm i http-server -g",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "start:local": "ng serve --host 192.168.0.148",
-    "build:docker": "ng build --configuration=docker"
+    "start:local": "ng serve --host 192.168.0.148"
   },
   "private": true,
   "dependencies": {
