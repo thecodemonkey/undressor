@@ -27,7 +27,7 @@ This project was created during the Twitter Hackathon
 
 <br/><br/>
 
-> What is the benefit of all the unlimited communication and free speech if everyone is just talking crap and believe in it??
+> What is the benefit of all the unlimited communication and free speech if everyone is just talking crap and believe in it?
 > We need mechanisms to drive Twitter and other social networks back to where they started. To bring people together instead of dividing them!
 
 <br/><br/><br/>
@@ -71,7 +71,7 @@ Our call to the developer community is:
 
 > Let's look together at what really MATTERS!
 > 
-> What is the benefit of all the unlimited communication and free speech if everyone is just talking crap and believe in it??
+> What is the benefit of all the unlimited communication and free speech if everyone is just talking crap and believe in it?
 > We need mechanisms to drive Twitter and other social networks back to where they started. To bring people together instead of dividing them!
 
 
