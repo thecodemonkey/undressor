@@ -25,6 +25,13 @@ This project was created during the Twitter Hackathon
 
 ## motivation
 
+<br/><br/>
+
+> What is the benefit of all the unlimited communication and free speech if everyone is just talking crap and believe in it??
+> We need mechanisms to drive Twitter and other social networks back to where they started. To bring people together instead of dividing them!
+
+<br/><br/><br/>
+
 Of course, one of the reasons was just to play around with the Twitter API V2 and participate in the hackathon. 
 
 But the real motivation was to develop a possible solution to the biggest challenge of all social networks. Uncontrolled spreading of MANIPULATION and hate speech!
@@ -63,6 +70,11 @@ Why are such issues not being addressed? Why does the Twitter community celebrat
 Our call to the developer community is: 
 
 > Let's look together at what really MATTERS!
+> 
+> What is the benefit of all the unlimited communication and free speech if everyone is just talking crap and believe in it??
+> We need mechanisms to drive Twitter and other social networks back to where they started. To bring people together instead of dividing them!
+
+
 
 <br/><br/>
 
